@@ -7,7 +7,7 @@ struct AppDefinition: App {
   var body: some Scene {
     WindowGroup {
       ContentView(purchases: purchases)
-        .tint(LiubaiStyle.red)
+        .tint(SeekerStyle.red)
         .preferredColorScheme(.light)
         .task {
           purchases.configure()

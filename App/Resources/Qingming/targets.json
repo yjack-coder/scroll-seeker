@@ -1,0 +1,22 @@
+{
+  "painting": "Along the River During the Qingming Festival (清明上河圖), Zhang Zeduan, Northern Song, c. 1100s. Public domain.",
+  "tiles": ["qingming_1.jpg","qingming_2.jpg","qingming_3.jpg","qingming_4.jpg","qingming_5.jpg","qingming_6.jpg","qingming_7.jpg","qingming_8.jpg"],
+  "tileNote": "8 tiles, each 3202x1200 (last one 3195), placed left to right = one continuous 25609x1200 image. The scroll is READ RIGHT-TO-LEFT: the story starts at the right end (tile 8, countryside) and ends at the left end (tile 1, the city).",
+  "coordinateNote": "x and y are normalized 0-1 over the FULL stitched image (x=0 left edge, y=0 top). Hit radius suggestion: 0.015 in x, 0.12 in y.",
+  "chapters": [
+    {"id": "river", "title": "汴河 · The River", "subtitle": "From quiet countryside to the busy Bian River", "xRange": [0.40, 1.0], "free": true},
+    {"id": "city",  "title": "城門 · The City", "subtitle": "Through the gate into the capital Bianjing", "xRange": [0.0, 0.40], "free": false}
+  ],
+  "targets": [
+    {"id":"donkeys","chapter":"river","x":0.950,"y":0.47,"clue":"clues/donkeys.jpg","name":"驢隊 Donkey Caravan","hint":"At the very beginning, in the misty countryside","story":"The scroll opens at dawn: a small train of donkeys carrying charcoal walks toward the city. The whole painting follows this journey from quiet fields to the busiest city on Earth in 1100 AD."},
+    {"id":"cargo_boat","chapter":"river","x":0.672,"y":0.45,"clue":"clues/cargo_boat.jpg","name":"漕船 Grain Barge","hint":"Moored along the riverbank","story":"The Bian River was the empire's artery. Barges like this carried grain from the south to feed about a million people in the capital."},
+    {"id":"sailboat","chapter":"river","x":0.419,"y":0.12,"clue":"clues/sailboat.jpg","name":"帆船 Boat Under Tow","hint":"Out on the open water near the top","story":"Boatmen pulled vessels upstream with long ropes. Look closely: every rope, oar and wave is painted by hand."},
+    {"id":"scaffold_tower","chapter":"river","x":0.444,"y":0.42,"clue":"clues/scaffold_tower.jpg","name":"彩樓歡門 Festive Gate","hint":"A tall bamboo structure beside a restaurant","story":"Restaurants built tall decorated bamboo gateways to attract customers. It was the Song dynasty's version of a neon sign."},
+    {"id":"rainbow_bridge","chapter":"river","x":0.495,"y":0.35,"clue":"clues/rainbow_bridge.jpg","name":"虹橋 Rainbow Bridge","hint":"The dramatic heart of the scroll","story":"The most famous moment: a large boat is about to hit the arched bridge while crowds shout warnings. It is the painting's great climax, a single frozen second of chaos."},
+    {"id":"city_gate","chapter":"city","x":0.181,"y":0.30,"clue":"clues/city_gate.jpg","name":"城門樓 City Gate Tower","hint":"The grand tower guarding the city","story":"Passing this gate you enter Bianjing (today's Kaifeng), then the largest and richest city in the world."},
+    {"id":"camels","chapter":"city","x":0.1625,"y":0.63,"clue":"clues/camels.jpg","name":"駱駝商隊 Camel Caravan","hint":"Travelers from the Silk Road near the gate","story":"Camels meant long-distance trade. Goods and ideas from Central Asia arrived through this very gate."},
+    {"id":"wine_shop_sign","chapter":"city","x":0.116,"y":0.47,"clue":"clues/wine_shop_sign.jpg","name":"正店 Licensed Tavern","hint":"A sign with two characters on a busy street","story":"A 正店 was a licensed tavern allowed to brew its own wine, the most prestigious restaurants in the capital."},
+    {"id":"sedan_chair","chapter":"city","x":0.114,"y":0.63,"clue":"clues/sedan_chair.jpg","name":"轎子 Sedan Chair","hint":"Someone important is being carried","story":"Wealthy residents were carried through crowded streets in sedan chairs, a status symbol of the time."},
+    {"id":"ox_cart","chapter":"city","x":0.078,"y":0.83,"clue":"clues/ox_cart.jpg","name":"牛車 Ox Cart","hint":"Heavy goods at the bottom of the street","story":"Oxen hauled heavy loads through the city. Nearly every person and animal in the scroll is doing a real job — over 800 people in total."}
+  ]
+}

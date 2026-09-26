@@ -1,48 +1,41 @@
-# 留白 Liubai
+# 尋畫 Scroll Seeker
 
-A private, offline-first ink-wash journal for iPhone and iPhone Duo.
+A hidden-object game inside Zhang Zeduan’s Qingming handscroll, built for iPhone and iPhone Duo.
 
-Write a short reflection, then open the scroll. Canvas builds a deterministic landscape from emotional weight, flow, and uncertainty. On supported devices, Foundation Models supplies structured interpretation and a bilingual poem. Offline keyword interpretation and six original poems cover simulator use and unavailable models. Ten dated studio samples are installed once; they are clearly identified and never consume the daily free painting.
+## Play
 
-## Try it
+- Choose The River (free) or The City (Pro). Each contains five supplied historical clues.
+- Fold for a brass-framed clue. Unfold to search. The toolbar’s **Open / Folded** button replays the transition in the simulator.
+- The eight original tiles form one continuous, 25,609 × 1,200 painting in a zero-spacing `LazyHStack`. Always enter at the right-hand countryside; pan left toward the city. Pinch from 1× to 4× and pan vertically when enlarged.
+- Discovery blooms warmth and saturation on the original painting pixels. Gold rings, red seals, and a story follow. Wrong taps carry no penalty.
+- Generated colorizations appear **only in story cards**, labeled “The scene come to life.” They never overlay the historic painting. [Prompts and asset provenance](docs/Colorization.md).
+- Completed chapters awaken right-to-left. Optional synthesized paper and guqin-like sounds are in Settings; sound defaults off and respects Silent mode.
+- One free hint per chapter; Pro unlocks unlimited hints and Museum Mode for revisiting earned stories.
 
-- Use the Open / Folded toolbar action to replay the scroll on any simulator.
-- iPhone Duo's iOS 27.1 hinge angle drives the paper reveal. Native navigation and flexible content adapt to its two displays. Physical fold controls are in Bitrig beside the simulator.
-- Tap a painting to read its source reflection and poem in accessible text.
-- The Long Scroll includes seven calendar days for Free and 365 days for Pro.
-- Pro also unlocks manual seasonal styles, drawn calligraphy with a seal, and a six-second MP4 unroll export using the native share sheet.
-- Dictation appears only when on-device speech recognition is supported.
+## Fold and accessibility
 
-## Purchases
+iOS 27.1’s continuous hinge angle drives the reveal when available, with an animated posture/size-change fallback. Flexible layouts accommodate the Duo’s outer and inner displays. Named painting accessibility actions provide zoom, pan, and inspect-center controls. Reduce Motion removes continuous atmospheric movement and uses immediate reveals. Timing pauses outside active searching.
 
-RevenueCat project: [留白 Liubai](https://app.revenuecat.com/projects/34a58452). The [published paywall](https://app.revenuecat.com/projects/34a58452/paywalls/pwc4af656faf734819/builder) is revision 3, with a compact layout for short displays.
+## RevenueCat
 
-The `pro` entitlement is served by current offering `default`:
+The connected account’s existing `pro` entitlement, `default` offering, and [published paywall](https://app.revenuecat.com/projects/34a58452/paywalls/pwc4af656faf734819/builder) are reused. Paywall revision 5 is styled for Scroll Seeker. Existing product IDs and prices are preserved, as requested when a catalog already exists:
 
-Purchases and RevenueCatUI are pinned to 5.80.0. At verification time, the connected project's SDK endpoint returned an empty published paywall component payload to 5.86–5.91, while 5.80.0 received the complete published design. Upgrade only after confirming that the published design loads through `PaywallView`.
-
-| Package | USD price |
+| Package | Existing USD price |
 | --- | --- |
 | Monthly | $3.99 |
 | Yearly | $24.99 |
 | Lifetime | $49.99 |
 
-Simulator and debug builds use RevenueCat Test Store. Its purchase outcomes are simulated and never charge money. The app gates access using actual RevenueCat customer information; it has no local Pro override. Restore purchases and Customer Center are available in Settings.
+RevenueCat and RevenueCatUI remain pinned to 5.80.0: the connected SDK endpoint returned the complete published paywall for this version during verification. Debug/simulator builds use RevenueCat Test Store with real SDK entitlement checks, not a local Pro bypass. Test Store purchases do not charge money. Restore and Customer Center are available in Settings.
 
-Before shipping live billing, connect App Store products and credentials and supply the App Store public SDK key (`appl_…`) as `RevenueCatAPIKey` in Project.json's Info.plist properties. Device release builds deliberately exclude the Test Store key and show an unavailable-purchases message until live billing is configured. Never put a RevenueCat secret key in the app.
+Live App Store billing still requires App Store products/credentials and the public `appl_…` SDK key as `RevenueCatAPIKey` in Project.json. Release builds exclude the Test Store key and safely leave The River available until live billing is configured. No secret keys belong in the app.
 
-## Storage and privacy
+## Assets, storage, and verification
 
-Reflections, deterministic landscape parameters, and poems are encoded locally in UserDefaults. Draft text is also retained locally. No journal text is sent to RevenueCat or an external AI service. RevenueCat receives the anonymous purchase data needed to manage membership. Video export is local and shared only through the system share sheet.
+Original tiles, target JSON, and clue crops were copied from the supplied `/Users/jackzhao/Desktop/qingming` folder without alteration. No replacement panorama or overview image was generated or downloaded. Only the ten explicitly requested clue colorizations were generated.
 
-Deleting the app removes its local journal. This version does not provide iCloud synchronization.
+Progress, earned seals, hint counts, chapter times, and sound preference persist locally. Existing Liubai journal data is left untouched; obsolete journal implementation files were removed and remain recoverable in git. No microphone/speech permission is requested. No CloudKit synchronization is implemented.
 
-Project configuration is managed by Bitrig in `Project.json`. Build and run with Bitrig.
+Verification includes 47 native model checks (reading order, target detection, persistence, hint limits, timers) and 1,334 coordinate checks across supplied targets, viewport sizes, and zoom levels. Build and UI checks use Bitrig’s iPhone Duo simulator.
 
-## Verification
-
-- Bitrig simulator build succeeds with no diagnostics.
-- 44 isolated native model checks passed: bilingual emotional mapping, normalized parameters, deterministic seeds, four-line poems, persistence, samples, free/Pro date windows, daily allowance, and concurrent generation suppression.
-- On the Duo simulator, writing and persistence, fold/open replay, source words, full history, synthetic yearly purchase, restore, Customer Center, and privacy navigation were exercised.
-- The actual Canvas painting rendered successfully into a six-second MP4, with the final frame inspected and the native share sheet opened without sending it.
-- Themed RevenueCat PaywallView rendering was verified after pinning the compatible SDK. The physical hinge-angle path is SDK-verified; simulator fold changes remain controlled by Bitrig's Fold controls.
+Zhang Zeduan, Along the River During the Qingming Festival, Northern Song. Public domain.

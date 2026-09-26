@@ -13,7 +13,7 @@
     "CODE_SIGN_IDENTITY": "-"
   },
   "targets": {
-    "Liubai": {
+    "ScrollSeeker": {
       "dependencies": [
         { "package": "RevenueCat", "product": "RevenueCat" },
         { "package": "RevenueCat", "product": "RevenueCatUI" }
@@ -21,10 +21,8 @@
       "info": {
         "path": "App/Info.plist",
         "properties": {
-          "CFBundleDisplayName": "留白 Liubai",
-          "CFBundleURLTypes": [{ "CFBundleURLName": "Liubai", "CFBundleURLSchemes": ["liubai"] }],
-          "NSMicrophoneUsageDescription": "Liubai uses the microphone to turn your spoken reflections into journal words on this device.",
-          "NSSpeechRecognitionUsageDescription": "Liubai transcribes your spoken reflections on this device so you can paint without typing.",
+          "CFBundleDisplayName": "尋畫 Scroll Seeker",
+          "CFBundleURLTypes": [{ "CFBundleURLName": "Scroll Seeker", "CFBundleURLSchemes": ["scrollseeker"] }],
           "CFBundleShortVersionString": "1.0",
           "CFBundleVersion": "1",
           "ITSAppUsesNonExemptEncryption": false,

@@ -9,7 +9,7 @@ final class PurchaseStore {
   private(set) var isLoading = false
   private(set) var isConfigured = false
   private(set) var offering: Offering?
-  private(set) var planName = "Free · A daily moment"
+  private(set) var planName = "Free · The River"
   private(set) var expirationDate: Date?
   private(set) var restoreMessage: String?
   var errorMessage: String?
@@ -36,7 +36,7 @@ final class PurchaseStore {
       let apiKey = Bundle.main.object(forInfoDictionaryKey: "RevenueCatAPIKey") as? String ?? ""
       guard apiKey.hasPrefix("appl_") else {
         errorMessage =
-          "Purchases are not available in this release yet. Your journal is still here."
+          "Purchases are not available in this release yet. You can still explore The River."
         return
       }
       Purchases.logLevel = .warn
@@ -92,8 +92,8 @@ final class PurchaseStore {
       apply(try await Purchases.shared.restorePurchases())
       restoreMessage =
         isPro
-        ? "Your Liubai Pro membership has been restored."
-        : "No active Liubai Pro purchase was found for this account."
+        ? "Your Scroll Seeker Pro membership has been restored."
+        : "No active Scroll Seeker Pro purchase was found for this account."
     } catch {
       errorMessage = "Purchases could not be restored. Please check your connection and try again."
     }
@@ -104,14 +104,15 @@ final class PurchaseStore {
     isPro = entitlement != nil
     expirationDate = entitlement?.expirationDate
     guard let entitlement else {
-      planName = "Free · A daily moment"
+      planName = "Free · The River"
       return
     }
     switch entitlement.productIdentifier {
-    case "liubai_pro_monthly": planName = "Liubai Pro · Monthly"
-    case "liubai_pro_yearly": planName = "Liubai Pro · Yearly"
-    case "liubai_pro_lifetime": planName = "Liubai Pro · Lifetime"
-    default: planName = "Liubai Pro"
+    // Preserve the existing catalog identifiers so previous purchases still unlock Pro.
+    case "liubai_pro_monthly": planName = "Scroll Seeker Pro · Monthly"
+    case "liubai_pro_yearly": planName = "Scroll Seeker Pro · Yearly"
+    case "liubai_pro_lifetime": planName = "Scroll Seeker Pro · Lifetime"
+    default: planName = "Scroll Seeker Pro"
     }
   }
 

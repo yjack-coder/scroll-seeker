@@ -15,7 +15,7 @@ struct MembershipCustomerCenterView: View {
             }
         } else {
           ContentUnavailableView {
-            Label("Membership unavailable", systemImage: "leaf")
+            Text("Membership unavailable")
           } description: {
             Text(purchaseStore.errorMessage ?? "Please try again when connected.")
           } actions: {
@@ -32,7 +32,7 @@ struct MembershipCustomerCenterView: View {
           }
         }
       }
-      .tint(Color(red: 0.647, green: 0.282, blue: 0.220))
+      .tint(Color(red: 0.592, green: 0.235, blue: 0.188))
       .task { await purchaseStore.refresh() }
     }
   }
