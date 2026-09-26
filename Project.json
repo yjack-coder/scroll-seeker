@@ -5,6 +5,7 @@
   },
   "name": "Project",
   "options": {
+    "deploymentTarget": { "iOS": "26.0" },
     "groupSortPosition": "bottom",
     "transitivelyLinkDependencies": false
   },
@@ -12,12 +13,18 @@
     "CODE_SIGN_IDENTITY": "-"
   },
   "targets": {
-    "Fridge Chef": {
-      "deploymentTarget": "26.0",
+    "Liubai": {
+      "dependencies": [
+        { "package": "RevenueCat", "product": "RevenueCat" },
+        { "package": "RevenueCat", "product": "RevenueCatUI" }
+      ],
       "info": {
         "path": "App/Info.plist",
         "properties": {
-          "CFBundleDisplayName": "New Project",
+          "CFBundleDisplayName": "留白 Liubai",
+          "CFBundleURLTypes": [{ "CFBundleURLName": "Liubai", "CFBundleURLSchemes": ["liubai"] }],
+          "NSMicrophoneUsageDescription": "Liubai uses the microphone to turn your spoken reflections into journal words on this device.",
+          "NSSpeechRecognitionUsageDescription": "Liubai transcribes your spoken reflections on this device so you can paint without typing.",
           "CFBundleShortVersionString": "1.0",
           "CFBundleVersion": "1",
           "ITSAppUsesNonExemptEncryption": false,
@@ -47,6 +54,12 @@
         }
       ],
       "type": "application"
+    }
+  },
+  "packages": {
+    "RevenueCat": {
+      "url": "https://github.com/RevenueCat/purchases-ios",
+      "exactVersion": "5.80.0"
     }
   }
 }
