@@ -1,0 +1,65 @@
+{
+  "title": "打醬油 · A Life Along the River",
+  "readingDirection": "RIGHT_TO_LEFT (x=1 is the start, x=0 is the end of the scroll)",
+  "hero": {"name": "小安 Xiao An", "stages": ["child 孩童", "scholar 書生", "thief 神偷"]},
+  "home": {"id": "home", "name": "小安的家 Home", "x": 0.900, "y": 0.42, "note": "Thatched farmhouse in the misty countryside, just left of the donkey caravan. Folding the phone always returns here."},
+  "segments": [
+    {"id": "s1", "name": "村口 Home Village",      "xRange": [0.84, 1.00], "act": 1},
+    {"id": "s2", "name": "柳林小道 Willow Path",    "xRange": [0.72, 0.84], "act": 1},
+    {"id": "s3", "name": "汴河碼頭 River Docks",    "xRange": [0.56, 0.72], "act": 1},
+    {"id": "s4", "name": "虹橋 Rainbow Bridge",     "xRange": [0.42, 0.56], "act": 1},
+    {"id": "s5", "name": "城外街市 Outer Market",   "xRange": [0.26, 0.42], "act": 2},
+    {"id": "s6", "name": "城門 City Gate",          "xRange": [0.14, 0.26], "act": 2},
+    {"id": "s7", "name": "京城 The Capital",        "xRange": [0.00, 0.14], "act": 2}
+  ],
+  "acts": [
+    {
+      "id": "act1", "name": "第一幕 · 打醬油 The Soy Sauce Errand", "stage": "child", "free": true,
+      "intro": "娘說：「安兒，去虹橋那邊給娘打一瓶醬油回來。」Mother hands Xiao An ten copper coins and an empty bottle.",
+      "missions": [
+        {"id": "m1", "segment": "s1", "x": 0.953, "y": 0.47, "title": "驢隊迷路 The Lost Donkey", "task": "A charcoal seller lost track of his donkeys. Find the donkey caravan.", "reward": {"coins": 5, "gear": "straw_sandals"}},
+        {"id": "m2", "segment": "s2", "x": 0.790, "y": 0.80, "title": "問路 Ask for Directions", "task": "Find the travelers riding donkeys on the willow path and ask the way to the river.", "reward": {"coins": 3}},
+        {"id": "m3", "segment": "s3", "x": 0.575, "y": 0.52, "title": "拉縴 Help the Boatmen", "task": "Boatmen are struggling to pole their boat under the willow. Find them and lend a hand.", "reward": {"coins": 8, "gear": "rope"}},
+        {"id": "m4", "segment": "s4", "x": 0.495, "y": 0.35, "title": "虹橋驚魂 Chaos at the Bridge", "task": "A big boat is about to crash into the Rainbow Bridge! Find it and shout a warning.", "reward": {"coins": 10, "gear": "lantern"}},
+        {"id": "m5", "segment": "s4", "x": 0.475, "y": 0.62, "title": "打醬油 Buy the Soy Sauce", "task": "Find the market stalls at the foot of the bridge and buy the soy sauce.", "reward": {"item": "soy_sauce"}},
+        {"id": "m6", "segment": "s1", "x": 0.900, "y": 0.42, "title": "回家 Go Home", "task": "Fold the phone to bring the soy sauce home to Mother.", "reward": {"coins": 10}, "trigger": "fold"}
+      ],
+      "outro": "娘笑了。Years pass… Xiao An grows up. At the Rainbow Bridge, life forks in two."
+    },
+    {
+      "id": "act2_scholar", "name": "第二幕 · 考狀元 The Scholar's Path", "stage": "scholar", "free": false,
+      "intro": "Xiao An chooses the brush. He travels to the capital to sit the imperial examination.",
+      "missions": [
+        {"id": "a1", "segment": "s5", "x": 0.444, "y": 0.42, "title": "借書 Borrow Books", "task": "Find the tall festive gate of the restaurant where scholars gather.", "reward": {"coins": 5, "gear": "brush"}},
+        {"id": "a2", "segment": "s6", "x": 0.181, "y": 0.30, "title": "入京 Enter the Capital", "task": "Find the great city gate tower.", "reward": {"coins": 5}},
+        {"id": "a3", "segment": "s6", "x": 0.1625, "y": 0.63, "title": "胡商 The Silk Road Merchant", "task": "A camel merchant sells rare ink. Find the camel caravan.", "reward": {"gear": "rare_ink"}},
+        {"id": "a4", "segment": "s7", "x": 0.116, "y": 0.47, "title": "詩會 Poetry Contest", "task": "Win a poetry contest at the licensed tavern 正店.", "reward": {"coins": 20}},
+        {"id": "a5", "segment": "s7", "x": 0.114, "y": 0.63, "title": "高中狀元 Top Scholar", "task": "An official in a sedan chair carries the exam results. Find him.", "reward": {"title": "狀元 Zhuangyuan"}}
+      ],
+      "ending": "金榜題名！Xiao An becomes the Top Scholar — and sends Mother the finest soy sauce in the capital."
+    },
+    {
+      "id": "act2_thief", "name": "第二幕 · 神偷 The Gentleman Thief", "stage": "thief", "free": false,
+      "intro": "Xiao An chooses the shadows — a Robin Hood thief who steals from the greedy rich to feed the poor.",
+      "missions": [
+        {"id": "b1", "segment": "s3", "x": 0.672, "y": 0.45, "title": "糧船 The Hoarded Grain", "task": "A greedy merchant hoards grain on a barge. Find it.", "reward": {"coins": 10, "gear": "grappling_hook"}},
+        {"id": "b2", "segment": "s5", "x": 0.419, "y": 0.12, "title": "水路 The Escape Boat", "task": "Find a boat on the open water for a quiet getaway.", "reward": {"coins": 5}},
+        {"id": "b3", "segment": "s7", "x": 0.078, "y": 0.83, "title": "牛車 The Ox Cart", "task": "Hide among the goods on the ox cart to slip into the city.", "reward": {"gear": "black_cloak"}},
+        {"id": "b4", "segment": "s7", "x": 0.114, "y": 0.63, "title": "轎中錢袋 The Purse in the Sedan", "task": "A corrupt official rides in a sedan chair. Lift his purse.", "reward": {"coins": 30}},
+        {"id": "b5", "segment": "s6", "x": 0.181, "y": 0.30, "title": "夜出城門 Out Through the Gate", "task": "Escape through the city gate and give the silver to the poor.", "reward": {"title": "俠盜 Gentleman Thief"}}
+      ],
+      "ending": "The poor of Bianjing eat well tonight. No one ever learns the name of the thief — except Mother."
+    }
+  ],
+  "gear": [
+    {"id": "straw_sandals", "name": "草鞋 Straw Sandals", "effect": "walk speed +1", "free": true},
+    {"id": "cloth_boots", "name": "布靴 Cloth Boots", "effect": "walk speed +2", "cost": 15},
+    {"id": "lantern", "name": "燈籠 Lantern", "effect": "hint glow radius larger", "free": true},
+    {"id": "magnifier", "name": "放大鏡 Magnifier", "effect": "zoom up to 6x", "cost": 20},
+    {"id": "rope", "name": "縴繩 Rope", "effect": "cosmetic", "free": true},
+    {"id": "brush", "name": "毛筆 Brush", "effect": "scholar path", "pro": true},
+    {"id": "rare_ink", "name": "松煙墨 Rare Ink", "effect": "scholar path", "pro": true},
+    {"id": "grappling_hook", "name": "飛爪 Grappling Hook", "effect": "thief path", "pro": true},
+    {"id": "black_cloak", "name": "夜行衣 Night Cloak", "effect": "thief path", "pro": true}
+  ]
+}

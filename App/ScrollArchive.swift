@@ -1,13 +1,33 @@
 import Foundation
 
 struct ScrollArchive: Codable, Hashable {
-  static let fullWidth: Double = 25_609
-  static let fullHeight: Double = 1_200
-
   var painting: String
   var tiles: [String]
   var chapters: [ScrollChapter]
   var targets: [ScrollTarget]
+  var pixelSize: [Double]? = nil
+
+  var aspectRatio: Double {
+    guard let pixelSize, pixelSize.count == 2,
+      pixelSize.allSatisfy({ $0.isFinite && $0 > 0 }) else {
+      return 1
+    }
+    return pixelSize[0] / pixelSize[1]
+  }
+
+  static func loadWorld() throws -> ScrollArchive {
+    guard let url = resourceURL(for: "World/world.json") else { throw ArchiveError.missingArchive }
+    let world = try JSONDecoder().decode(WorldRaster.self, from: Data(contentsOf: url))
+    guard world.size.count == 2, world.size.allSatisfy({ $0.isFinite && $0 > 0 }),
+          resourceURL(for: "World/" + world.image) != nil else { throw ArchiveError.missingArchive }
+    return ScrollArchive(painting: "A Life Along the River", tiles: ["World/" + world.image],
+                         chapters: [], targets: [], pixelSize: world.size)
+  }
+
+  private struct WorldRaster: Decodable {
+    var image: String
+    var size: [Double]
+  }
 
   static func load() throws -> ScrollArchive {
     guard let url = resourceURL(for: "targets.json") else {
@@ -37,7 +57,7 @@ struct ScrollArchive: Codable, Hashable {
     let path = resource as NSString
     let filename = path.lastPathComponent as NSString
     let relativeDirectory = path.deletingLastPathComponent
-    let roots = ["Qingming", "Resources/Qingming", ""]
+    let roots = ["", "World", "Resources/World", "Qingming", "Resources/Qingming", "Resources"]
 
     for root in roots {
       let directory = [root, relativeDirectory].filter { !$0.isEmpty }.joined(separator: "/")
@@ -95,6 +115,7 @@ struct ScrollTarget: Identifiable, Codable, Hashable {
   var story: String
   var x: Double
   var y: Double
+  var seal: String? = nil
 
   var chineseName: String {
     String(name.split(maxSplits: 1, whereSeparator: { $0.isWhitespace }).first ?? Substring(name))

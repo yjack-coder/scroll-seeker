@@ -15,19 +15,19 @@ struct SeekerSettingsView: View {
             SeekerSeal(size: 44)
             VStack(alignment: .leading, spacing: 4) {
               Text("尋畫 Scroll Seeker").font(.system(.headline, design: .serif))
-              Text("A living museum in your hands.").font(.system(.caption, design: .serif)).foregroundStyle(.secondary)
+              Text("A life along the river.").font(.system(.caption, design: .serif)).foregroundStyle(.secondary)
             }
           }.padding(.vertical, 8)
         }
-        Section("Your collection") {
+        Section("Your unfolding story") {
           LabeledContent("Plan", value: purchases.planName)
-          if !purchases.isPro {
-            Button("Explore Scroll Seeker Pro", systemImage: "lock") { showMembership = true }
-          }
+          Button(purchases.isPro ? "View membership plans" : "Explore Scroll Seeker Pro", systemImage: "lock") { showMembership = true }
           Button("Restore purchases", systemImage: "arrow.clockwise") {
             Task { await purchases.restore() }
           }.disabled(purchases.isLoading)
           Button("Customer Center", systemImage: "book.closed") { showCustomerCenter = true }
+          Text("Act I and the home hub are free. Pro includes both Act II paths, their story-earned gear, and extra outfits.")
+            .font(.footnote).foregroundStyle(.secondary)
           if let message = purchases.restoreMessage { Text(message).font(.footnote).foregroundStyle(.secondary) }
           if let error = purchases.errorMessage { Text(error).font(.footnote).foregroundStyle(SeekerStyle.red) }
           if PurchaseStore.isTestStore {
@@ -38,16 +38,19 @@ struct SeekerSettingsView: View {
         Section {
           Toggle("Paper & guqin sounds", systemImage: soundEnabled ? "speaker.wave.2" : "speaker.slash", isOn: $soundEnabled)
         } header: { Text("Atmosphere") } footer: {
-          Text("Soft paper, plucked strings, and a quiet chime when a chapter comes alive. Respects Silent mode.")
+          Text("Soft paper, plucked strings, and a quiet chime for each new memory. Respects Silent mode.")
         }
         Section("Inside the scroll") {
-          Text("Begin at the right, in the countryside. Pan left toward the city. Pinch to see the smallest details, or use the painting’s accessibility actions.")
-          Text("Find each clue to awaken its original ink with warmth and color. The story cards hold colorized interpretations; the historic painting itself stays untouched.")
+          Text("Walk with Xiao An through the countryside and toward the capital. Follow Mother’s errand, meet the people inside the painting, and find your own path.")
+          Text("Fold to return home to Mother, prepare your gear, and open the seal album. Unfold to resume exactly where Xiao An was standing. Walk through the mist to reach the next scene.")
+          Text("Copper coins are earned by completing missions. Spend them on ordinary gear at home; coins are never sold for real money.")
           NavigationLink("Privacy") { SeekerPrivacyView() }
         }
         Section("The original masterpiece") {
           Text("Zhang Zeduan, Along the River During the Qingming Festival, Northern Song. Public domain.")
             .font(.system(.footnote, design: .serif)).lineSpacing(4)
+          Text("The game world is a separate illustrated setting supplied by the team, inspired by the historic handscroll.")
+            .font(.footnote).foregroundStyle(.secondary)
         }
       }
       .scrollContentBackground(.hidden)

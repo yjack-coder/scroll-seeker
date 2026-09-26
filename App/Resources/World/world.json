@@ -1,0 +1,317 @@
+{
+ "image": "world.jpg",
+ "size": [
+  9832,
+  724
+ ],
+ "readingDirection": "RIGHT_TO_LEFT (x=1 is home/start)",
+ "note": "x,y normalized over world.jpg. walkpath ordered right-to-left; hero's feet ride this line (Catmull-Rom).",
+ "segments": [
+  {
+   "panel": "Panel0",
+   "name": "村口 Home Village",
+   "xRange": [
+    0.7791,
+    1.0
+   ]
+  },
+  {
+   "panel": "Panel2",
+   "name": "柳林茶棚 Willow Path & Tea House",
+   "xRange": [
+    0.6233,
+    0.8442
+   ]
+  },
+  {
+   "panel": "Panel3",
+   "name": "汴河碼頭 River Docks",
+   "xRange": [
+    0.4675,
+    0.6884
+   ]
+  },
+  {
+   "panel": "Panel4",
+   "name": "城外市集 Outer Market",
+   "xRange": [
+    0.3116,
+    0.5325
+   ]
+  },
+  {
+   "panel": "Panel5",
+   "name": "城門 City Gate",
+   "xRange": [
+    0.1558,
+    0.3767
+   ]
+  },
+  {
+   "panel": "Panel6",
+   "name": "京城 The Capital",
+   "xRange": [
+    0.0,
+    0.2209
+   ]
+  }
+ ],
+ "walkpath": [
+  [
+   0.9956,
+   0.7
+  ],
+  [
+   0.9558,
+   0.68
+  ],
+  [
+   0.9238,
+   0.64
+  ],
+  [
+   0.9006,
+   0.62
+  ],
+  [
+   0.8785,
+   0.6
+  ],
+  [
+   0.8608,
+   0.56
+  ],
+  [
+   0.8387,
+   0.49
+  ],
+  [
+   0.8166,
+   0.42
+  ],
+  [
+   0.7968,
+   0.38
+  ],
+  [
+   0.7791,
+   0.36
+  ],
+  [
+   0.7691,
+   0.61
+  ],
+  [
+   0.7426,
+   0.57
+  ],
+  [
+   0.7227,
+   0.53
+  ],
+  [
+   0.7006,
+   0.47
+  ],
+  [
+   0.6763,
+   0.42
+  ],
+  [
+   0.652,
+   0.37
+  ],
+  [
+   0.6233,
+   0.34
+  ],
+  [
+   0.5956,
+   0.44
+  ],
+  [
+   0.5713,
+   0.4
+  ],
+  [
+   0.547,
+   0.34
+  ],
+  [
+   0.5271,
+   0.26
+  ],
+  [
+   0.5116,
+   0.16
+  ],
+  [
+   0.494,
+   0.1
+  ],
+  [
+   0.4751,
+   0.58
+  ],
+  [
+   0.4574,
+   0.68
+  ],
+  [
+   0.4353,
+   0.74
+  ],
+  [
+   0.4088,
+   0.74
+  ],
+  [
+   0.3823,
+   0.66
+  ],
+  [
+   0.3558,
+   0.56
+  ],
+  [
+   0.3337,
+   0.5
+  ],
+  [
+   0.3281,
+   0.74
+  ],
+  [
+   0.3016,
+   0.7
+  ],
+  [
+   0.2839,
+   0.66
+  ],
+  [
+   0.2619,
+   0.7
+  ],
+  [
+   0.2353,
+   0.74
+  ],
+  [
+   0.2088,
+   0.7
+  ],
+  [
+   0.1867,
+   0.62
+  ],
+  [
+   0.1691,
+   0.6
+  ],
+  [
+   0.1502,
+   0.74
+  ],
+  [
+   0.1237,
+   0.74
+  ],
+  [
+   0.0972,
+   0.72
+  ],
+  [
+   0.0707,
+   0.68
+  ],
+  [
+   0.0442,
+   0.66
+  ],
+  [
+   0.0177,
+   0.64
+  ]
+ ],
+ "places": {
+  "home": {
+   "x": 0.9238,
+   "y": 0.62,
+   "panel": "Panel0",
+   "note": "小安的家 Home — Mother and Xiao An stand at the door"
+  },
+  "lost_donkey": {
+   "x": 0.8365,
+   "y": 0.46,
+   "panel": "Panel0",
+   "note": "驢隊迷路 — rider and donkey on the village road"
+  },
+  "directions": {
+   "x": 0.7426,
+   "y": 0.57,
+   "panel": "Panel2",
+   "note": "問路 — a man pointing the way to a child"
+  },
+  "tea_house": {
+   "x": 0.7227,
+   "y": 0.5,
+   "panel": "Panel2",
+   "note": "茶棚 Tea house — scholars gather (Act 2 scholar start)"
+  },
+  "boatmen": {
+   "x": 0.5647,
+   "y": 0.4,
+   "panel": "Panel3",
+   "note": "拉縴 — men hauling the rope on the pier"
+  },
+  "grain_barge": {
+   "x": 0.5006,
+   "y": 0.45,
+   "panel": "Panel3",
+   "note": "糧船 — big cargo barge (Act 2 thief start)"
+  },
+  "rainbow_bridge": {
+   "x": 0.505,
+   "y": 0.1,
+   "panel": "Panel3",
+   "note": "虹橋 — the crowded arched bridge"
+  },
+  "soy_sauce_shop": {
+   "x": 0.4574,
+   "y": 0.6,
+   "panel": "Panel4",
+   "note": "醬園 Soy sauce shop — a shopkeeper pouring soy sauce into a bottle, a child waiting"
+  },
+  "paper_boat": {
+   "x": 0.6895,
+   "y": 0.62,
+   "panel": "Panel2",
+   "note": "紙船 Paper boat quest — a child by the little footbridge over the stream"
+  },
+  "city_gate": {
+   "x": 0.2851,
+   "y": 0.52,
+   "panel": "Panel5",
+   "note": "城門 — the great city gate with guards (enter the capital)"
+  },
+  "poetry_tower": {
+   "x": 0.1105,
+   "y": 0.4,
+   "panel": "Panel6",
+   "note": "酒樓詩會 — scholars on the upper floor of the tavern (poetry contest / exam)"
+  },
+  "tavern": {
+   "x": 0.1149,
+   "y": 0.62,
+   "panel": "Panel6",
+   "note": "正店 — tavern ground floor, crowded tables"
+  },
+  "ox_cart": {
+   "x": 0.1303,
+   "y": 0.8,
+   "panel": "Panel6",
+   "note": "牛車 — barrel cart pulled by a horse (thief hides here)"
+  }
+ }
+}

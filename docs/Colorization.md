@@ -19,7 +19,13 @@ Constraints: CHANGE ONLY COLOR. Preserve EXACT composition, framing, geometry, p
 Specific source asset: {id}. Preserve the exact visible subject and its details from this input.
 ```
 
-The `{id}` placeholder was replaced separately with each target identifier in the table below. The donkey was an earlier approved edit; its original tool result is recorded separately.
+The `{id}` placeholder was replaced separately with each target identifier in the table below.
+
+## Final prompt for the earlier donkey edit
+
+```text
+Use case: precise-object-edit. Edit the supplied 600×600 crop from Zhang Zeduan’s Along the River During the Qingming Festival. Colorize ONLY the existing ink artwork with faithful Song dynasty mineral pigments: vivid azurite blue, malachite green, cinnabar red in small cloth accents, ochre earth, subtle gold light. Keep every donkey, person, tree, branch, line, crop, camera, exact composition and object position unchanged. Preserve aged silk fibers and all original black ink contours. Do not redraw or invent anything, do not add text, frames, people, or objects. The color should feel luminous and alive but historical, still a Chinese ink painting on aged silk. Produce a square colorized counterpart aligned with the supplied original.
+```
 
 ## Saved assets
 
@@ -37,4 +43,3 @@ The `{id}` placeholder was replaced separately with each target identifier in th
 | wine_shop_sign | `App/Resources/Qingming/colorized/wine_shop_sign_color.png` | `/Users/jackzhao/.codex/generated_images/01a0df61-6620-7f60-9381-2dba5cdb847b/exec-a968a5d5-674c-41fa-8d27-e8e126bc1819.png` |
 
 Source painting: Zhang Zeduan, *Along the River During the Qingming Festival*, Northern Song. Public domain. Generated pigments are an artistic interpretation.
-

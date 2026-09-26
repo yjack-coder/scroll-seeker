@@ -1,9 +1,8 @@
 import SwiftUI
 import UIKit
-import ImageIO
 
-/// The actual handscroll stays in its original left-to-right pixel order. We
-/// begin at the right edge, so a player's journey follows the historical scroll.
+/// The supplied world raster remains in its native left-to-right pixel order.
+/// Viewport-sized overlays preserve the painting's geometry at every zoom.
 struct ScrollSearchCanvas: View {
     var archive: ScrollArchive
     var activeTarget: ScrollTarget?
@@ -19,9 +18,28 @@ struct ScrollSearchCanvas: View {
     var chapterComplete: Bool = false
     var chapterRange: ClosedRange<Double> = 0.4...1
     var isActive: Bool = true
+    var heroPosition: CGPoint? = nil
+    var heroStage: AdventureStage = .child
+    var heroWalking = false
+    var heroFacingLeft = true
+    var maximumZoom: CGFloat = 4
+    var missionPosition: CGPoint? = nil
+    var lanternRadius: Double = 1
+    var heroJumpTrigger = 0
+    var lanternLit = false
+    var heroOpacity: Double = 1
+    var showsWalkHint = false
+    var fogEnabled = false
+    var revealProgress: Double = 1
+    var excludedTouchRects: [CGRect] = []
+    var pathPoints: [AdventurePathPoint] = []
+    var isEditingPath: Bool = false
+    var onPathPointMove: ((UUID, CGPoint) -> Void)? = nil
+    var onPathPointDelete: ((UUID) -> Void)? = nil
+    var onPathPointAdd: ((CGPoint) -> Void)? = nil
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var position = ScrollPosition(point: .zero)
+    @State private var position = ScrollPosition(edge: .trailing)
     @State private var zoom: CGFloat = 1
     @State private var pinch: ScrollPinchAnchor?
     @State private var viewport = ScrollViewportGeometry()
@@ -30,25 +48,20 @@ struct ScrollSearchCanvas: View {
     @State private var completionDate: Date?
     @State private var hintDate = Date.distantPast
     @State private var feedbackDate = Date.distantPast
-    @State private var visibleTileImages: [String: UIImage] = [:]
+    @State private var camera = ScrollHeroCamera()
+    @State private var hasOpenedCamera = false
+    @State private var pathDrag: ScrollPathDrag?
+    @State private var selectedPathPoint: UUID?
+    @State private var lastPathInteraction = Date.distantPast
 
     var body: some View {
         GeometryReader { geometry in
-            let canvasSize = ScrollViewportMath.contentSize(viewportHeight: geometry.size.height, zoom: zoom)
+            let canvasSize = ScrollViewportMath.contentSize(viewportHeight: geometry.size.height, zoom: zoom, aspectRatio: archive.aspectRatio)
 
             let interactiveCanvas = ZStack(alignment: .topLeading) {
-                ScrollView([.horizontal, .vertical]) {
-                    LazyHStack(alignment: .top, spacing: 0) {
-                        ForEach(Array(archive.tiles.enumerated()), id: \.element) { index, tile in
-                            let pixelWidth: Double = index == archive.tiles.count - 1 ? 3195 : 3202
-                            ScrollRasterTile(
-                                url: ScrollArchive.resourceURL(for: tile),
-                                isNearViewport: tileIsNearViewport(index: index, contentSize: canvasSize),
-                                onImageChange: { image in visibleTileImages[tile] = image }
-                            )
-                            .frame(width: canvasSize.height * pixelWidth / ScrollArchive.fullHeight, height: canvasSize.height)
-                        }
-                    }
+                if heroPosition == nil || isEditingPath {
+                  ScrollView([.horizontal, .vertical]) {
+                    WorldTileRaster(canvasSize: canvasSize)
                     .frame(width: canvasSize.width, height: canvasSize.height, alignment: .topLeading)
                 }
                 .scrollIndicators(.hidden)
@@ -67,23 +80,22 @@ struct ScrollSearchCanvas: View {
                 } action: { oldValue, newValue in
                     viewport = newValue
                     guard newValue.content.width > 1, newValue.container.width > 1 else { return }
-                    if !didPosition {
-                        didPosition = true
-                        moveToBeginning(contentSize: canvasSize, container: geometry.size)
-                    } else if oldValue.container != newValue.container, oldValue.content.width > 1, pinch == nil {
-                        // Opening the Duo changes the visible area, not the place in the painting.
-                        let center = oldValue.normalizedCenter
+                    if didPosition, oldValue.container != newValue.container, oldValue.content.width > 1, pinch == nil {
+                        let center = heroPosition ?? oldValue.normalizedCenter
                         move(to: center, contentSize: canvasSize, container: geometry.size)
                     }
                     onViewportChange(newValue.visibleRange)
+                }
+                } else {
+                    WorldTileRaster(canvasSize: canvasSize)
+                        .offset(x: -viewport.offset.x, y: -viewport.offset.y)
+                        .frame(width: geometry.size.width, height: geometry.size.height, alignment: .topLeading)
+                        .clipped()
                 }
 
                 ScrollLivingOverlay(
                     contentSize: canvasSize,
                     offset: viewport.offset,
-                    tiles: archive.tiles,
-                    tileImages: visibleTileImages,
-                    landmarks: archive.targets,
                     foundTargets: foundTargets,
                     foundDates: foundDates,
                     completedRegions: completedColorRegions,
@@ -95,23 +107,72 @@ struct ScrollSearchCanvas: View {
                 )
                 .allowsHitTesting(false)
                 .accessibilityHidden(true)
+
+                if let heroPosition, !isEditingPath {
+                    WorldFogLayer(heroX: heroPosition.x, contentSize: canvasSize,
+                                  offset: viewport.offset, isActive: isActive, enabled: fogEnabled)
+                        .allowsHitTesting(false)
+                }
+
+                if isEditingPath {
+                    ScrollPathDrawing(points: pathPoints, contentSize: canvasSize, offset: viewport.offset)
+                        .allowsHitTesting(false).accessibilityHidden(true)
+                    ForEach(pathPoints) { point in
+                        pathHandle(point, contentSize: canvasSize, container: geometry.size)
+                    }
+                }
+
+                if let missionPosition {
+                    let npc = ScrollViewportMath.localPoint(normalized: missionPosition, offset: viewport.offset, contentSize: canvasSize)
+                    Circle().stroke(SeekerStyle.gold.opacity(0.7), lineWidth: 1.5)
+                        .frame(width: 36 * lanternRadius, height: 36 * lanternRadius)
+                        .background { Circle().fill(SeekerStyle.gold.opacity(0.13)).blur(radius: 10) }
+                        .overlay(alignment: .top) {
+                            Text("!").font(.system(size: 18, weight: .bold, design: .serif)).foregroundStyle(SeekerStyle.paper)
+                                .padding(5).background(SeekerStyle.indigo, in: Circle()).offset(y: -23)
+                        }
+                        .position(npc).allowsHitTesting(false).accessibilityHidden(true)
+                }
+                if let heroPosition {
+                    let hero = ScrollViewportMath.localPoint(normalized: heroPosition, offset: viewport.offset, contentSize: canvasSize)
+                    let spriteHeight = max(110, geometry.size.height * 0.22)
+                    let footFraction = AdventureHeroSprite.footFraction(for: heroStage)
+                    AdventureHeroSprite(stage: heroStage, walking: heroWalking && isActive, facingLeft: heroFacingLeft, height: spriteHeight, jumpTrigger: heroJumpTrigger, showsName: true)
+                        .shadow(color: lanternLit ? SeekerStyle.gold.opacity(0.9) : .clear, radius: lanternLit ? 16 : 0)
+                        .position(x: hero.x, y: hero.y - spriteHeight * (footFraction - 0.5))
+                        .opacity(heroOpacity)
+                        .allowsHitTesting(false).accessibilityHidden(true)
+                    if showsWalkHint && !heroWalking {
+                        ScrollWalkHint()
+                            .position(x: min(geometry.size.width - 138, max(138, hero.x)),
+                                      y: max(100, hero.y - spriteHeight - 35))
+                            .allowsHitTesting(false)
+                    }
+                }
             }
+            .coordinateSpace(name: ScrollCanvasSpace.viewport)
             .contentShape(Rectangle())
             .clipped()
             .simultaneousGesture(pinchGesture(contentSize: canvasSize, container: geometry.size))
             .simultaneousGesture(
                 SpatialTapGesture().onEnded { event in
-                    guard pinch == nil else { return }
+                    guard pinch == nil, pathDrag == nil,
+                          Date.now.timeIntervalSince(lastPathInteraction) > 0.35,
+                          !excludedTouchRects.contains(where: { $0.contains(event.location) }) else { return }
+                    if isEditingPath, pathPoints.contains(where: {
+                        let point = ScrollViewportMath.localPoint(normalized: CGPoint(x: $0.x, y: $0.y), offset: viewport.offset, contentSize: canvasSize)
+                        return hypot(point.x - event.location.x, point.y - event.location.y) < 24
+                    }) { return }
                     tap(at: event.location, contentSize: canvasSize)
                 }
             )
             let accessibleCanvas = interactiveCanvas
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Qingming handscroll")
+            .accessibilityElement(children: isEditingPath ? .contain : .ignore)
+            .accessibilityLabel(isEditingPath ? "Walking path editor" : "A Life Along the River, painted world")
             .accessibilityValue("\(Int(zoom * 100)) percent zoom, \(Int(viewport.visibleRange.upperBound * 100)) percent across the painting")
-            .accessibilityHint("Pan left toward the city. Pinch to examine the painting. Tap an object to inspect it.")
+            .accessibilityHint(isEditingPath ? "Pan and pinch to inspect the road. Drag yellow points to trace it. Tap empty painting to add a point; hold a point to delete." : heroPosition == nil ? "Pan left toward the city. Pinch to examine the painting." : "Tap the road to walk there. Hold the direction controls to walk. Pinch to examine the world.")
             .accessibilityAction(named: Text("Zoom in")) {
-                changeZoom(to: min(4, zoom + 0.5), container: geometry.size)
+                changeZoom(to: min(maximumZoom, zoom + 0.5), container: geometry.size)
             }
             .accessibilityAction(named: Text("Zoom out")) {
                 changeZoom(to: max(1, zoom - 0.5), container: geometry.size)
@@ -128,18 +189,68 @@ struct ScrollSearchCanvas: View {
             .accessibilityAction(named: Text("Pan downward")) {
                 pan(by: CGSize(width: 0, height: geometry.size.height * 0.6), contentSize: canvasSize, container: geometry.size)
             }
-            .accessibilityAction(named: Text("Inspect the center of the painting")) {
+            .accessibilityAction(named: Text(isEditingPath ? "Add path point at the center of the view" : "Walk to the center of the view")) {
                 tap(at: CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2), contentSize: canvasSize)
             }
             accessibleCanvas
+            .task(id: geometry.size) {
+                guard heroPosition == nil || isEditingPath else { return }
+                guard !didPosition, geometry.size.width > 1, geometry.size.height > 1 else { return }
+                // The initial geometry callback can precede UIScrollView's
+                // attachment. Wait for that layout before issuing a point move;
+                // until then, the native trailing-edge position is authoritative.
+                try? await Task.sleep(for: .milliseconds(60))
+                guard !Task.isCancelled, !didPosition else { return }
+                moveToBeginning(contentSize: canvasSize, container: geometry.size)
+                didPosition = true
+            }
+            .onChange(of: geometry.size, initial: true) { _, size in
+                guard !isEditingPath, let heroPosition else { return }
+                camera.resize(content: canvasSize, container: size, target: heroPosition)
+                if revealProgress > 0 && !hasOpenedCamera {
+                    camera.beginOpening(atHome: heroPosition.x > 0.90, reduceMotion: reduceMotion)
+                    hasOpenedCamera = true
+                }
+                publishCamera()
+            }
+            .onChange(of: revealProgress) { old, value in
+                guard !isEditingPath, let heroPosition, old <= 0, value > 0 else { return }
+                camera.resize(content: canvasSize, container: geometry.size, target: heroPosition)
+                camera.beginOpening(atHome: !hasOpenedCamera && heroPosition.x > 0.90, reduceMotion: reduceMotion)
+                hasOpenedCamera = true
+                publishCamera()
+            }
+            .task(id: isActive && revealProgress > 0 && !isEditingPath) {
+                guard isActive, revealProgress > 0, heroPosition != nil, !isEditingPath else { return }
+                var previous = Date.now
+                while !Task.isCancelled {
+                    do { try await Task.sleep(for: .milliseconds(16)) } catch { return }
+                    let now = Date.now
+                    camera.tick(delta: now.timeIntervalSince(previous), reduceMotion: reduceMotion)
+                    previous = now
+                    publishCamera()
+                }
+            }
             .onChange(of: chapterID) { _, _ in
                 zoom = 1
                 pinch = nil
                 hintDate = .distantPast
                 feedbackDate = .distantPast
                 completionDate = chapterComplete ? .distantPast : nil
-                let freshSize = ScrollViewportMath.contentSize(viewportHeight: geometry.size.height, zoom: 1)
+                let freshSize = ScrollViewportMath.contentSize(viewportHeight: geometry.size.height, zoom: 1, aspectRatio: archive.aspectRatio)
                 moveToBeginning(contentSize: freshSize, container: geometry.size)
+            }
+            .onChange(of: heroPosition) { _, newPosition in
+                guard !isEditingPath, let newPosition else { return }
+                camera.target = newPosition
+            }
+            .onChange(of: heroStage) { _, _ in
+                guard !isEditingPath, let heroPosition else { return }
+                move(to: heroPosition, contentSize: canvasSize, container: geometry.size)
+            }
+            .onChange(of: isActive) { _, active in
+                guard active, !isEditingPath, let heroPosition else { return }
+                camera.target = heroPosition
             }
             .onChange(of: hintTrigger) { _, _ in
                 guard let target = hintTarget else { return }
@@ -164,7 +275,7 @@ struct ScrollSearchCanvas: View {
                 completionDate = newValue ? (oldValue == newValue ? .distantPast : .now) : nil
             }
         }
-        // Locale must not reverse the supplied tile order or normalized coordinates.
+        // Locale must not mirror the world or its normalized coordinates.
         .environment(\.layoutDirection, .leftToRight)
         .background(Color(red: 0.78, green: 0.71, blue: 0.55))
         .task(id: hintTrigger) {
@@ -197,16 +308,13 @@ struct ScrollSearchCanvas: View {
         }
     }
 
-    private func tileIsNearViewport(index: Int, contentSize: CGSize) -> Bool {
-        let tileWidth = contentSize.height * 3202 / ScrollArchive.fullHeight
-        let left = CGFloat(index) * tileWidth
-        let preload = max(viewport.container.width, 200)
-        return left + tileWidth >= viewport.offset.x - preload && left <= viewport.offset.x + viewport.container.width + preload
-    }
-
     private func pinchGesture(contentSize: CGSize, container: CGSize) -> some Gesture {
         MagnifyGesture(minimumScaleDelta: 0.005)
             .onChanged { event in
+                if isEditingPath {
+                    lastPathInteraction = .now
+                    if pathDrag != nil { pathDrag = nil }
+                }
                 if pinch == nil {
                     let local = event.startLocation
                     pinch = ScrollPinchAnchor(
@@ -216,30 +324,47 @@ struct ScrollSearchCanvas: View {
                     )
                 }
                 guard let pinch else { return }
-                let updatedZoom = min(4, max(1, pinch.startZoom * event.magnification))
+                let updatedZoom = min(maximumZoom, max(1, pinch.startZoom * event.magnification))
                 zoom = updatedZoom
-                let updatedSize = ScrollViewportMath.contentSize(viewportHeight: container.height, zoom: updatedZoom)
+                let updatedSize = ScrollViewportMath.contentSize(viewportHeight: container.height, zoom: updatedZoom, aspectRatio: archive.aspectRatio)
+                if !isEditingPath, let heroPosition {
+                    camera.resize(content: updatedSize, container: container, target: heroPosition)
+                    publishCamera()
+                    return
+                }
                 position.scrollTo(point: boundedOffset(
                     CGPoint(x: pinch.normalizedPoint.x * updatedSize.width - pinch.localPoint.x,
                             y: pinch.normalizedPoint.y * updatedSize.height - pinch.localPoint.y),
                     contentSize: updatedSize, container: container
                 ))
             }
-            .onEnded { _ in pinch = nil }
+            .onEnded { _ in
+                pinch = nil
+                if isEditingPath { lastPathInteraction = .now }
+            }
     }
 
     private func changeZoom(to value: CGFloat, container: CGSize) {
-        let center = viewport.normalizedCenter
+        let center = heroPosition ?? viewport.normalizedCenter
         zoom = value
-        let size = ScrollViewportMath.contentSize(viewportHeight: container.height, zoom: value)
+        let size = ScrollViewportMath.contentSize(viewportHeight: container.height, zoom: value, aspectRatio: archive.aspectRatio)
         move(to: center, contentSize: size, container: container)
     }
 
     private func moveToBeginning(contentSize: CGSize, container: CGSize) {
+        if let heroPosition {
+            move(to: heroPosition, contentSize: contentSize, container: container)
+            return
+        }
         position.scrollTo(point: boundedOffset(CGPoint(x: startX * contentSize.width - container.width, y: 0), contentSize: contentSize, container: container))
     }
 
     private func move(to normalizedPoint: CGPoint, contentSize: CGSize, container: CGSize) {
+        if heroPosition != nil && !isEditingPath {
+            camera.resize(content: contentSize, container: container, target: normalizedPoint)
+            publishCamera()
+            return
+        }
         position.scrollTo(point: boundedOffset(
             CGPoint(x: normalizedPoint.x * contentSize.width - container.width / 2,
                     y: normalizedPoint.y * contentSize.height - container.height / 2),
@@ -248,6 +373,7 @@ struct ScrollSearchCanvas: View {
     }
 
     private func pan(by amount: CGSize, contentSize: CGSize, container: CGSize) {
+        guard heroPosition == nil || isEditingPath else { return }
         withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.5)) {
             position.scrollTo(point: boundedOffset(
                 CGPoint(x: viewport.offset.x + amount.width, y: viewport.offset.y + amount.height),
@@ -260,10 +386,93 @@ struct ScrollSearchCanvas: View {
         ScrollViewportMath.boundedOffset(point, contentSize: contentSize, container: container)
     }
 
+    private func publishCamera() {
+        let next = ScrollViewportGeometry(offset: camera.offset, content: camera.content, container: camera.container)
+        guard viewport != next else { return }
+        viewport = next
+        onViewportChange(next.visibleRange)
+    }
+
     private func tap(at point: CGPoint, contentSize: CGSize) {
         let normalized = ScrollViewportMath.normalizedPoint(local: point, offset: viewport.offset, contentSize: contentSize)
         guard (0...1).contains(normalized.x), (0...1).contains(normalized.y) else { return }
-        onTap(Double(normalized.x), Double(normalized.y))
+        if isEditingPath {
+            onPathPointAdd?(normalized)
+        } else {
+            onTap(Double(normalized.x), Double(normalized.y))
+        }
+    }
+
+    private func pathHandle(_ point: AdventurePathPoint, contentSize: CGSize, container: CGSize) -> some View {
+        let local = ScrollViewportMath.localPoint(normalized: CGPoint(x: point.x, y: point.y), offset: viewport.offset, contentSize: contentSize)
+        let visible = CGRect(origin: .zero, size: container).insetBy(dx: -22, dy: -22).contains(local)
+        return Button {
+            selectedPathPoint = point.id
+            lastPathInteraction = .now
+        } label: {
+            Circle().fill(Color.yellow)
+                .frame(width: 16, height: 16)
+                .overlay { Circle().strokeBorder(selectedPathPoint == point.id ? Color.red : SeekerStyle.ink, lineWidth: selectedPathPoint == point.id ? 3 : 1.5) }
+                .shadow(color: .black.opacity(0.25), radius: 2)
+                .frame(width: 44, height: 44).contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .highPriorityGesture(
+            DragGesture(minimumDistance: 0, coordinateSpace: .named(ScrollCanvasSpace.viewport))
+                .onChanged { value in
+                    guard pinch == nil else { return }
+                    lastPathInteraction = .now
+                    selectedPathPoint = point.id
+                    if pathDrag?.id != point.id {
+                        pathDrag = ScrollPathDrag(id: point.id, start: CGPoint(x: point.x, y: point.y))
+                    }
+                    guard let drag = pathDrag, hypot(value.translation.width, value.translation.height) > 0.5 else { return }
+                    let origin = ScrollViewportMath.localPoint(normalized: drag.start, offset: viewport.offset, contentSize: contentSize)
+                    let updated = ScrollViewportMath.normalizedPoint(
+                        local: CGPoint(x: origin.x + value.translation.width, y: origin.y + value.translation.height),
+                        offset: viewport.offset, contentSize: contentSize
+                    )
+                    onPathPointMove?(point.id, clampedPathPoint(updated))
+                }
+                .onEnded { _ in
+                    lastPathInteraction = .now
+                    pathDrag = nil
+                }
+                .simultaneously(with:
+                    LongPressGesture(minimumDuration: 0.7, maximumDistance: 8)
+                        .onEnded { _ in deletePathPoint(point.id) }
+                )
+        )
+        .position(local)
+        .opacity(visible ? 1 : 0)
+        .allowsHitTesting(visible)
+        .accessibilityHidden(!visible)
+        .accessibilityLabel("Path control point")
+        .accessibilityValue("x \(point.x, specifier: "%.3f"), y \(point.y, specifier: "%.3f")")
+        .accessibilityHint("Drag to move, or hold to delete. Direction actions are also available.")
+        .accessibilityAction(named: Text("Move left")) { nudgePathPoint(point, dx: -0.001, dy: 0) }
+        .accessibilityAction(named: Text("Move right")) { nudgePathPoint(point, dx: 0.001, dy: 0) }
+        .accessibilityAction(named: Text("Move up")) { nudgePathPoint(point, dx: 0, dy: -0.01) }
+        .accessibilityAction(named: Text("Move down")) { nudgePathPoint(point, dx: 0, dy: 0.01) }
+        .accessibilityAction(named: Text("Delete path point")) { deletePathPoint(point.id) }
+    }
+
+    private func clampedPathPoint(_ point: CGPoint) -> CGPoint {
+        CGPoint(x: min(1, max(0, point.x)), y: min(1, max(0, point.y)))
+    }
+
+    private func nudgePathPoint(_ point: AdventurePathPoint, dx: Double, dy: Double) {
+        selectedPathPoint = point.id
+        lastPathInteraction = .now
+        onPathPointMove?(point.id, clampedPathPoint(CGPoint(x: point.x + dx, y: point.y + dy)))
+    }
+
+    private func deletePathPoint(_ id: UUID) {
+        lastPathInteraction = .now
+        pathDrag = nil
+        selectedPathPoint = nil
+        guard pathPoints.count > 2 else { return }
+        onPathPointDelete?(id)
     }
 }
 
@@ -278,6 +487,39 @@ private struct ScrollPinchAnchor {
     var startZoom: CGFloat
     var normalizedPoint: CGPoint
     var localPoint: CGPoint
+}
+
+private enum ScrollCanvasSpace: Hashable { case viewport }
+
+private struct ScrollPathDrag {
+    var id: UUID
+    var start: CGPoint
+}
+
+private struct ScrollPathDrawing: View {
+    var points: [AdventurePathPoint]
+    var contentSize: CGSize
+    var offset: CGPoint
+
+    var body: some View {
+        Canvas { context, size in
+            guard points.count >= 2, contentSize.width > 0,
+                  let minX = points.last?.x, let maxX = points.first?.x else { return }
+            let left = max(minX, Double(offset.x / contentSize.width))
+            let right = min(maxX, Double((offset.x + size.width) / contentSize.width))
+            guard left <= right else { return }
+            let steps = max(1, Int(ceil(size.width / 4)))
+            var path = Path()
+            for step in 0...steps {
+                let x = left + (right - left) * Double(step) / Double(steps)
+                guard let normalized = AdventureWalkPath.interpolate(points: points, atX: x) else { continue }
+                let pixel = ScrollViewportMath.localPoint(normalized: normalized, offset: offset, contentSize: contentSize)
+                if step == 0 { path.move(to: pixel) } else { path.addLine(to: pixel) }
+            }
+            context.stroke(path, with: .color(Color.white.opacity(0.8)), style: StrokeStyle(lineWidth: 4.5, lineCap: .round, lineJoin: .round))
+            context.stroke(path, with: .color(.red), style: StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+        }
+    }
 }
 
 private struct ScrollCompletedColorRegion {
@@ -299,66 +541,26 @@ private struct ScrollViewportGeometry: Equatable {
     }
 }
 
-/// Each visible tile owns its decoded pixels; leaving the prefetch window drops
-/// them. We never make a 25,609-pixel UIImage, offscreen layer, or image cache.
-private struct ScrollRasterTile: View {
-    var url: URL?
-    var isNearViewport: Bool
-    var onImageChange: (UIImage?) -> Void
-    @State private var image: UIImage?
-
+private struct ScrollWalkHint: View {
     var body: some View {
-        ZStack {
-            Color(red: 0.78, green: 0.71, blue: 0.55)
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .interpolation(.high)
-            }
+        VStack(spacing: 3) {
+            Text("按住左邊走路").font(SeekerStyle.brush(18))
+            Text("Hold left to walk").font(.system(.caption, design: .serif))
         }
-        .task(id: isNearViewport) {
-            guard isNearViewport, let url else {
-                image = nil
-                onImageChange(nil)
-                return
-            }
-            let loaded = await Task.detached(priority: .userInitiated) {
-                Self.loadTile(url)
-            }.value
-            guard !Task.isCancelled else { return }
-            image = loaded
-            onImageChange(loaded)
-        }
-        .onDisappear {
-            image = nil
-            onImageChange(nil)
-        }
-        .accessibilityHidden(true)
-    }
-
-    nonisolated private static func loadTile(_ url: URL) -> UIImage? {
-        autoreleasepool {
-            guard let source = CGImageSourceCreateWithURL(url as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary),
-                  let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, [
-                    kCGImageSourceCreateThumbnailFromImageAlways: true,
-                    kCGImageSourceThumbnailMaxPixelSize: 3202,
-                    kCGImageSourceCreateThumbnailWithTransform: true,
-                    kCGImageSourceShouldCacheImmediately: true
-                  ] as CFDictionary) else { return nil }
-            return UIImage(cgImage: cgImage)
-        }
+        .foregroundStyle(SeekerStyle.indigo)
+        .padding(.horizontal, 18).padding(.vertical, 10)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(width: 260)
     }
 }
 
 /// All animated artwork is drawn into the small viewport, never into a layer
 /// the width of the whole scroll. The saturation layer redraws only the original
-/// tile pixels, preserving every contour and historical target coordinate.
+/// raster pixels, preserving every contour and world coordinate.
 private struct ScrollLivingOverlay: View {
     var contentSize: CGSize
     var offset: CGPoint
-    var tiles: [String]
-    var tileImages: [String: UIImage]
-    var landmarks: [ScrollTarget]
     var foundTargets: [ScrollTarget]
     var foundDates: [String: Date]
     var completedRegions: [ScrollCompletedColorRegion]
@@ -419,18 +621,7 @@ private struct ScrollLivingOverlay: View {
         }
         context.addFilter(.saturation(1.7))
         context.addFilter(.contrast(1.025))
-        let visibleRect = CGRect(origin: .zero, size: size)
-        for (index, tile) in tiles.enumerated() {
-            let pixelWidth: Double = index == tiles.count - 1 ? 3195 : 3202
-            let rect = CGRect(
-                x: Double(index) * 3202 / ScrollArchive.fullWidth * contentSize.width - offset.x,
-                y: -offset.y,
-                width: pixelWidth / ScrollArchive.fullWidth * contentSize.width,
-                height: contentSize.height
-            )
-            guard rect.intersects(visibleRect), let image = tileImages[tile] else { continue }
-            context.draw(Image(uiImage: image), in: rect)
-        }
+        WorldTileStore.shared.draw(in: &context, contentSize: contentSize, offset: offset, viewportSize: size)
     }
 
     private func discoveryProgress(target: ScrollTarget, time: Double) -> Double {
@@ -482,33 +673,7 @@ private struct ScrollLivingOverlay: View {
     }
 
     private func drawLivingDetails(context: inout GraphicsContext, size: CGSize, time: Double) {
-        let visibleRect = CGRect(origin: .zero, size: size).insetBy(dx: -40, dy: -40)
         let localTime = time.truncatingRemainder(dividingBy: 1000)
-        let scale = contentSize.height / 700
-
-        // Quiet ambient life is present throughout the original painting, even
-        // before discovery. Only the stronger warm color is earned by finding.
-        for index in 0..<68 {
-            let x = 0.415 + Double(index) / 68 * 0.385
-            let y = 0.25 + Double((index * 37) % 31) / 100
-            let p = point(x, y)
-            guard visibleRect.contains(p) else { continue }
-            let phase = localTime * 0.8 + Double(index) * 1.7
-            let alpha = 0.05 + (sin(phase) + 1) * 0.075
-            let drift = CGFloat(sin(phase * 0.5)) * 3 * scale
-            var ripple = Path()
-            ripple.move(to: CGPoint(x: p.x - 9 * scale + drift, y: p.y))
-            ripple.addQuadCurve(to: CGPoint(x: p.x + 9 * scale + drift, y: p.y), control: CGPoint(x: p.x, y: p.y - 1.5 * scale))
-            context.stroke(ripple, with: .color(Color(red: 0.95, green: 0.9, blue: 0.67).opacity(alpha)), style: StrokeStyle(lineWidth: max(0.5, scale), lineCap: .round))
-        }
-
-        // Lantern warmth belongs to the two real tavern locations.
-        for location in [CGPoint(x: 0.116, y: 0.47), CGPoint(x: 0.444, y: 0.42)] {
-            let p = point(location.x, location.y)
-            guard visibleRect.contains(p) else { continue }
-            let glow = 0.17 + sin(localTime * 1.2 + location.x * 20) * 0.04
-            pigmentPool(context: &context, center: p, radius: CGSize(width: 24 * scale, height: 35 * scale), color: .orange, opacity: glow)
-        }
 
         // One unhurried flock appears briefly, then the air is still again.
         let flight = localTime.truncatingRemainder(dividingBy: 28)
@@ -522,22 +687,6 @@ private struct ScrollLivingOverlay: View {
                 bird.addQuadCurve(to: CGPoint(x: x, y: y), control: CGPoint(x: x - 1.8, y: y - 3))
                 bird.addQuadCurve(to: CGPoint(x: x + 5, y: y - wing), control: CGPoint(x: x + 1.8, y: y - 3))
                 context.stroke(bird, with: .color(Color(red: 0.16, green: 0.2, blue: 0.2).opacity(0.45)), style: StrokeStyle(lineWidth: 0.9, lineCap: .round))
-            }
-        }
-
-        // Slow, translucent veils and a few trembling leaves add breath without
-        // moving a photographed target away from its hit-test coordinate.
-        for target in landmarks {
-            let p = point(target.x, target.y)
-            guard visibleRect.insetBy(dx: -100, dy: -100).contains(p) else { continue }
-            let drift = CGFloat(sin(localTime * 0.14 + target.x * 20)) * 24
-            pigmentPool(context: &context, center: CGPoint(x: p.x + drift, y: p.y - 52 * scale), radius: CGSize(width: 100 * scale, height: 20 * scale), color: Color(red: 0.94, green: 0.9, blue: 0.77), opacity: 0.055)
-            if target.x > 0.85 {
-                for leaf in 0..<5 {
-                    let sway = CGFloat(sin(localTime * 0.65 + Double(leaf))) * 1.8 * scale
-                    let leafPoint = CGPoint(x: p.x - 40 * scale + CGFloat(leaf) * 12 * scale + sway, y: p.y - 46 * scale + CGFloat(leaf % 2) * 8 * scale)
-                    context.fill(Path(ellipseIn: CGRect(x: leafPoint.x, y: leafPoint.y, width: 4 * scale, height: 1.5 * scale)), with: .color(gold.opacity(0.2)))
-                }
             }
         }
     }
@@ -554,7 +703,8 @@ private struct ScrollLivingOverlay: View {
             context.stroke(Path(ellipseIn: rect.insetBy(dx: -3, dy: -3)), with: .color(gold.opacity(0.27)), style: StrokeStyle(lineWidth: 0.7))
             let stampRect = CGRect(x: p.x + radius * 0.55, y: p.y + radius * 0.4, width: 21, height: 24)
             context.fill(Path(roundedRect: stampRect, cornerRadius: 2), with: .color(vermilion.opacity(0.92)))
-            context.draw(Text("尋").font(.system(size: 16, weight: .medium, design: .serif)).foregroundStyle(Color(red: 0.98, green: 0.93, blue: 0.77)), at: CGPoint(x: stampRect.midX, y: stampRect.midY))
+            let inscription = target.seal ?? "印"
+            context.draw(Text(inscription).font(.system(size: inscription.count > 1 ? 10 : 16, weight: .medium, design: .serif)).foregroundStyle(Color(red: 0.98, green: 0.93, blue: 0.77)), at: CGPoint(x: stampRect.midX, y: stampRect.midY))
         }
     }
 

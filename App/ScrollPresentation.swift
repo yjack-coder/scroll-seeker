@@ -13,16 +13,14 @@ struct ScrollUnrollPresentation: ViewModifier, Animatable {
   func body(content: Content) -> some View {
     let revealedWidth = viewportSize.width * min(1, max(0, progress))
     content
-      .mask { Rectangle().frame(width: revealedWidth) }
+      .mask(alignment: .trailing) { Rectangle().frame(width: revealedWidth) }
       .overlay {
         // Read the interpolated presentation value so the rollers stay visible
         // while the model's progress has already reached its destination.
         if progress > 0 && progress < 0.999 && !reduceMotion {
-          ZStack {
-            WoodenRoller().offset(x: -revealedWidth / 2)
-            WoodenRoller().offset(x: revealedWidth / 2)
-          }
+          WoodenRoller()
           .frame(width: viewportSize.width, height: viewportSize.height + 10)
+          .offset(x: viewportSize.width / 2 - revealedWidth)
           .transition(.identity)
           .allowsHitTesting(false)
           .accessibilityHidden(true)
@@ -70,20 +68,5 @@ struct SeekerMinimap: View {
     .background(SeekerStyle.paper.opacity(0.94), in: RoundedRectangle(cornerRadius: 8))
     .accessibilityElement(children: .ignore)
     .accessibilityLabel("Scroll position, \(Int(viewport.lowerBound * 100)) to \(Int(viewport.upperBound * 100)) percent from the left")
-  }
-}
-
-struct SeekerHingeObserver: ViewModifier {
-  var enabled: Bool
-  var change: (Double, Bool) -> Void
-  func body(content: Content) -> some View {
-    if #available(iOS 27.1, *) {
-      content.onHingeChange { _, new in
-        guard enabled, let hinge = new.hinge else { return }
-        if hinge.status == .partiallyOpen {
-          change(min(1, max(0, hinge.angle.degrees / 180)), false)
-        } else { change(hinge.status == .fullyOpen ? 1 : 0, true) }
-      }
-    } else { content }
   }
 }

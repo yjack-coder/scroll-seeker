@@ -4,22 +4,22 @@ struct SeekerPrivacyView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 28) {
-        Text("Your discoveries stay with you.")
+        Text("A life along the river, saved with you.")
           .font(.system(.title, design: .serif))
         SeekerPrivacyParagraph(
           title: "Your progress",
           detail:
-            "Scroll Seeker saves your found objects, chapter times, hints used, and preferences on this device. These may be included in device backups you choose to keep. You do not need an account to explore the painting."
+            "Scroll Seeker saves Xiao An’s position, completed missions, story journal, copper coins, inventory, gear, outfits, and your preferences on this device. These may be included in device backups you choose to keep. You do not need an account to explore the painting."
         )
         SeekerPrivacyParagraph(
           title: "The painting",
           detail:
-            "The painting, clue images, and stories are included in the app and can be explored offline. Scroll Seeker does not request microphone, camera, or photo-library access."
+            "The painting, character art, and stories are included in the app and can be explored offline. Scroll Seeker does not request microphone, camera, or photo-library access. Your story is not sent to an AI service."
         )
         SeekerPrivacyParagraph(
           title: "Membership",
           detail:
-            "RevenueCat receives an anonymous app identifier, purchase information, and basic device and app-usage information to check your plan, restore purchases, and manage your membership. Your found-object progress stays on this device and is not sent to RevenueCat. An internet connection is needed for purchases and restores."
+            "RevenueCat receives an anonymous app identifier, purchase information, and basic device and app-usage information to check your plan, restore purchases, and manage your membership. Your story progress and earned coins stay on this device and are not sent to RevenueCat. An internet connection is needed for purchases and restores."
         )
         Link(
           "RevenueCat's privacy policy",

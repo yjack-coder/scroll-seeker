@@ -1,0 +1,40 @@
+{
+ "source": "world.jpg",
+ "size": [
+  9832,
+  724
+ ],
+ "order": "left_to_right",
+ "tiles": [
+  {
+   "file": "world_01.jpg",
+   "x": 0,
+   "width": 1639
+  },
+  {
+   "file": "world_02.jpg",
+   "x": 1639,
+   "width": 1639
+  },
+  {
+   "file": "world_03.jpg",
+   "x": 3278,
+   "width": 1639
+  },
+  {
+   "file": "world_04.jpg",
+   "x": 4917,
+   "width": 1639
+  },
+  {
+   "file": "world_05.jpg",
+   "x": 6556,
+   "width": 1639
+  },
+  {
+   "file": "world_06.jpg",
+   "x": 8195,
+   "width": 1637
+  }
+ ]
+}

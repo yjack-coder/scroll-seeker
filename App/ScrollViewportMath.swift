@@ -3,9 +3,10 @@ import Foundation
 /// Coordinate conversion is shared by drawing, hit testing, hints and the
 /// minimap. Points always refer to the complete, unmirrored original painting.
 enum ScrollViewportMath {
-    static func contentSize(viewportHeight: CGFloat, zoom: CGFloat) -> CGSize {
-        let height = max(1, viewportHeight) * min(4, max(1, zoom))
-        return CGSize(width: height * ScrollArchive.fullWidth / ScrollArchive.fullHeight, height: height)
+    static func contentSize(viewportHeight: CGFloat, zoom: CGFloat, aspectRatio: CGFloat) -> CGSize {
+        let height = max(1, viewportHeight) * min(6, max(1, zoom))
+        let validAspect = aspectRatio.isFinite && aspectRatio > 0 ? aspectRatio : 1
+        return CGSize(width: height * validAspect, height: height)
     }
 
     static func boundedOffset(_ point: CGPoint, contentSize: CGSize, container: CGSize) -> CGPoint {

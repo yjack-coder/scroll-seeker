@@ -1,0 +1,765 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05880A506BEF318EF90BBD2A /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A23FE9033D40D51F8D6E6CC /* App.swift */; };
+		07818F5BCE68D98A7BD6C123 /* AdventureForkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD63DA3612E9289E069E5EEE /* AdventureForkView.swift */; };
+		08C9C2DF27DB88B3F71AA43B /* ScrollPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B034ADC724DB4F6E55C84361 /* ScrollPresentation.swift */; };
+		0A32EE5075C304CF56509A38 /* AdventureDonkeyChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A391C4E57ECBFF398ECEED /* AdventureDonkeyChallenge.swift */; };
+		0A577C45BC0D889221E94964 /* city_gate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 67AA94526D493E93646B2DD9 /* city_gate.jpg */; };
+		0D611B9B954E742260C2B046 /* WorldTileRaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC35890592601126B818430 /* WorldTileRaster.swift */; };
+		0FB795B99E15BCD33B108AEC /* AdventureControlDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28E5F8A089C21BB8495DA16 /* AdventureControlDeck.swift */; };
+		101321A541899C6419289272 /* donkeys_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 757412C2A398B18F5A771112 /* donkeys_color.png */; };
+		1089CE7E1DB1644021D9033B /* world_02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 21F808A08939390C25CCD8C8 /* world_02.jpg */; };
+		142D49B65FACC7B6EDDA314D /* WorldTileManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F08A7E61B8767F2AECE0A5 /* WorldTileManifest.swift */; };
+		1B8F351B101BF14C8D52EC6E /* AdventurePostureObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8D39DAED06DFB787D153B /* AdventurePostureObserver.swift */; };
+		1D936E86614AD08254F41DD6 /* AdventureMissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003207741A3EE5308CA8BD1C /* AdventureMissionView.swift */; };
+		1DAA18001AB843A9FEB488A7 /* ScrollHeroCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B259E96AD48564E3533573F /* ScrollHeroCamera.swift */; };
+		1FFB2C0ACA6DC7A2809396B3 /* AdventureMissionSeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF98C2432F553C8EAA4475C /* AdventureMissionSeal.swift */; };
+		20748CDCCEE0464C2CB094F2 /* xiao_an_child.png in Resources */ = {isa = PBXBuildFile; fileRef = B92BFAAAFC1172DD232517B1 /* xiao_an_child.png */; };
+		2146A51D4482F6C82DBCBA5F /* ScrollArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE813142E6C46916C8331EC /* ScrollArchive.swift */; };
+		24EA7B0B0D02C4EAF94A578D /* donkeys.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7C96C2C6521D64D1DBC13D27 /* donkeys.jpg */; };
+		2907CDAFDFC3D75D0826C45E /* AdventureArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF440879A955A198ACA03CA6 /* AdventureArchive.swift */; };
+		295FDED0A58616283126A1C5 /* wine_shop_sign_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 7919F6D5348DBE6E6F9C0853 /* wine_shop_sign_color.png */; };
+		29C74C219386E370644F2E1C /* SeekerPrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC110C589A09F300A251827 /* SeekerPrivacyView.swift */; };
+		36809FBE7E0FEC6028C8C124 /* wine_shop_sign.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9BD469BFE7567CE3D8B1AC3B /* wine_shop_sign.jpg */; };
+		38FE1A0E7C0808C67C3A5A28 /* WorldPaintingCrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4687303899CD1F34E276FD99 /* WorldPaintingCrop.swift */; };
+		3AAC1621915FB90A79975A74 /* AdventureTimingChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474CB3CEB4A6998DF369F0D5 /* AdventureTimingChallenge.swift */; };
+		3B5356FD662F6DD983F55A46 /* AdventureExamChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EDA82F2E31684D8BCBFF26 /* AdventureExamChallenge.swift */; };
+		3CC06AFEB7E5A467D15BE317 /* cargo_boat_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 106287AD2C46335DE02B215B /* cargo_boat_color.png */; };
+		3DE31EE853DDC75DA36D52AA /* MembershipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC38A6B42DF5A3F203DF7371 /* MembershipView.swift */; };
+		3E7E52936EC098560418E4EC /* targets.json in Resources */ = {isa = PBXBuildFile; fileRef = 2D81F79B24CBCCE1A1FF8756 /* targets.json */; };
+		4015FE9306E08F87320F6E71 /* AdventureShadowTheaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9B65B6C78E228040DB831E /* AdventureShadowTheaterView.swift */; };
+		42149156948D24A5AE5C67D3 /* world_03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6641AE7ACFA54511AFC29EB0 /* world_03.jpg */; };
+		4393553A912B8C5E35E1078B /* AdventureWorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE73C1143B72D53F2D541E /* AdventureWorldView.swift */; };
+		45A5E2112B599FAD5FB6BC2A /* AdventureCricketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4169307D3592A24067D711 /* AdventureCricketView.swift */; };
+		4866D62EFF0F6F4C4A0FE852 /* ScrollSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32350C7D8BC627453FD3DBEE /* ScrollSound.swift */; };
+		48EB943720F66CF604D5EABE /* AdventureEndingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56684CCCADA933D90013640 /* AdventureEndingView.swift */; };
+		4D67565DDE2DEC94054F7434 /* AdventurePathEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0C4B64AE38635A0CD5F0A4 /* AdventurePathEditorView.swift */; };
+		509604458272BE0D08723D61 /* xiao_an_scholar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DE5E8F33C1F31A4A46FBF60 /* xiao_an_scholar.png */; };
+		57C68715E4F7DAC5F6EA9F0C /* tiles.json in Resources */ = {isa = PBXBuildFile; fileRef = F0B24767503B5D48865E19A5 /* tiles.json */; };
+		59051CDE913EC8E3BF2E0601 /* sailboat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B3A8D357EA30319A9A847F95 /* sailboat.jpg */; };
+		5D0880650DE020138927A586 /* AdventurePosture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9785ADCE247F9F563DA203C3 /* AdventurePosture.swift */; };
+		5EFE53EDB7C3004A0271789F /* AdventureSealAlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E67C4DACC63BB2CA4F884E /* AdventureSealAlbumView.swift */; };
+		61F18F30DE759BC0EC4CFE2C /* AdventureOrigamiState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93EB37FA3A715E5ABE2F3EB /* AdventureOrigamiState.swift */; };
+		6233FEDB7200B6E86B5E113C /* cargo_boat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BAB41EFD446CE79C69DA8936 /* cargo_boat.jpg */; };
+		67D4A053A81A0B951FDDBE02 /* rainbow_bridge.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6E2FC7CBE0B3C1B8F463FAAA /* rainbow_bridge.jpg */; };
+		695444E158D43BCAED424C9C /* ox_cart_color.png in Resources */ = {isa = PBXBuildFile; fileRef = D6EE2707E6F79FEB3B747890 /* ox_cart_color.png */; };
+		6C8F6265234A457E8DB50518 /* sedan_chair.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1A379B2A555104B80335ED35 /* sedan_chair.jpg */; };
+		6D34F99BB61A4BC947D26156 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = AF99E5ABEBF44E30998365EC /* RevenueCat */; };
+		6F559713186D6C122B0730FA /* AdventureMemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7131F2441A842A982A5C2 /* AdventureMemoryView.swift */; };
+		70D860B54C84C2FB971B918A /* AdventureGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A31FDCB16CE718F063F914 /* AdventureGame.swift */; };
+		72EFA66EA4F202FD4D5AC02D /* AdventureWorldArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E8C31738AF5FBAE7046B57 /* AdventureWorldArchive.swift */; };
+		7530795ADBA3ED34B0838B77 /* AdventureBottleChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53A4A46884BF87106D27450 /* AdventureBottleChallenge.swift */; };
+		77959517B5749ADA37BCAE11 /* WorldFogLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9444DF3DF29D5FBBF69B959B /* WorldFogLayer.swift */; };
+		7A6606C020A2EBC7216ACA5D /* world_04.jpg in Resources */ = {isa = PBXBuildFile; fileRef = ED1C20F6837B324DB002BFD0 /* world_04.jpg */; };
+		7BEDC5B1A3C6A4DBC8CB27AB /* sailboat_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 16B5DEE4533F008775F6F13A /* sailboat_color.png */; };
+		7D9BEA1527D06E1EC7453CEC /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 32F650F5441A7124E8D13A36 /* RevenueCatUI */; };
+		83C7C20A577914B2B27ABAFC /* city_gate_color.png in Resources */ = {isa = PBXBuildFile; fileRef = E993477A6D5A7D27A5B98C43 /* city_gate_color.png */; };
+		909CBD42AE66D8D0B09DEDFE /* AdventureBridgeChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D44909E1EDBF7FC95DA572 /* AdventureBridgeChallenge.swift */; };
+		90F3184A525553A54AE46562 /* SeekerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3612B6265E5B4F46FD41310 /* SeekerStyle.swift */; };
+		91820A66C1455667B756F9EB /* WorldTileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 257F01F007F533081E47EF92 /* WorldTileStore.swift */; };
+		94C8284A2553DFF5910EDB8E /* world.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F936D8CC535EB33088A969BB /* world.jpg */; };
+		98A78DBA0550ACDF197C7EEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3797E591F302ECC0AA2FC607 /* Assets.xcassets */; };
+		98B551A350E717C30A3E6D24 /* xiao_an_thief.png in Resources */ = {isa = PBXBuildFile; fileRef = 93324374DAB3EBAA39BF41BF /* xiao_an_thief.png */; };
+		9990C8503500942E234654A4 /* WorldFogProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8507E72EB695B05FE41A70A5 /* WorldFogProgress.swift */; };
+		99F6FC2C3E5869FDE4D6D668 /* rainbow_bridge_color.png in Resources */ = {isa = PBXBuildFile; fileRef = BB9E9DBC3CDF0F3E07A853A1 /* rainbow_bridge_color.png */; };
+		9C8D527E1659CA95958EE190 /* world_05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8F544AA842E758C30A1854D7 /* world_05.jpg */; };
+		A06468A6D854AF94FCCF542F /* AdventureRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E24AF16614705297E068FA6 /* AdventureRewardView.swift */; };
+		A2A6FF8BB4EA7BFBF18C4E84 /* AdventureHeroMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD31D584F22D158E460209D0 /* AdventureHeroMotion.swift */; };
+		A4854E721CA6973864D3049C /* PurchaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2136665C232E63202CE82E4D /* PurchaseStore.swift */; };
+		A5379C299AB32A1F114F6043 /* AdventureStealthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB8C36EB5AB7C4C44A7A4C /* AdventureStealthChallenge.swift */; };
+		AA4EE94103FC36BBB135C447 /* AdventureHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9EA46CB609DABA237ABBA4 /* AdventureHomeView.swift */; };
+		AC10B78C4F58D3D67E240F0E /* scaffold_tower.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 312B98AC11E68BA4E3A38358 /* scaffold_tower.jpg */; };
+		AE47A6B91E8835607CC85CF4 /* camels_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 414534D7A5E1FE91E9290424 /* camels_color.png */; };
+		B00CC47D4DC411CA55F858A1 /* scaffold_tower_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BA1A01EBDF3509F47C27299 /* scaffold_tower_color.png */; };
+		B05819CE76AE1866771250FC /* AdventurePoemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C488A4C7304CC62CB7E8D8 /* AdventurePoemStore.swift */; };
+		B16AE0C114B1B99EDFF2E433 /* ScrollViewportMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBC12BAF3E501616E54042 /* ScrollViewportMath.swift */; };
+		BD9E01FA73C4E4440F15FD46 /* AdventureChoiceChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1360D184DE7B189EB07D25A /* AdventureChoiceChallenge.swift */; };
+		C457F1E2BD051922AF07707C /* MembershipCustomerCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E0AB6F3A666DEBEE4059F5 /* MembershipCustomerCenterView.swift */; };
+		C72243B1CBFD98F1EC71EB1E /* AdventureHeroSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972181EAD8DD1D6C6EB4693A /* AdventureHeroSprite.swift */; };
+		CC00682CE716498C791345C2 /* AdventureCoupletChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3D7A21ECD3DDDA7AAC8720 /* AdventureCoupletChallenge.swift */; };
+		CD6D6F5821F7B17F050B8B8A /* story.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C76BC9B7AFD81AC2AA20B41 /* story.json */; };
+		CD7CFCB47A39D1A08B9DE24C /* AdventureSealPoem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D92F076CB9140CD115A9003 /* AdventureSealPoem.swift */; };
+		CEAB5D54088F68AD5E97C773 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F16C0358BDBE96493C540D /* ContentView.swift */; };
+		CF270FC912F561C405DFFE29 /* world_06.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C527101147F6D37F1D87250C /* world_06.jpg */; };
+		CF9B54670204B0D115419AA3 /* SeekerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F64D26C05CDEBE798ACFE47 /* SeekerSettingsView.swift */; };
+		D774155C3AAB1CC1454A28D9 /* ox_cart.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1BB799F8D9288F3858F5AFDE /* ox_cart.jpg */; };
+		DA8B9B9C35616F750ECF698C /* world_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C15C449E353874E4BFF330A7 /* world_01.jpg */; };
+		DB2265BB6FC5316A9C3F0610 /* AdventureLaptopLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174CDBAC6B1D04B14EC588CC /* AdventureLaptopLayout.swift */; };
+		DBCEBD2B1AAC01CEC160046B /* AdventureLetterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414717E52EDFF58FA4C6E78 /* AdventureLetterView.swift */; };
+		DC420CE36C14D0BC729BA41E /* sedan_chair_color.png in Resources */ = {isa = PBXBuildFile; fileRef = 36799B3C26F9825F08B8640C /* sedan_chair_color.png */; };
+		E8AF00F02CCB52CEA07CBC01 /* camels.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 175D2086FC5B48C89F0DEF83 /* camels.jpg */; };
+		EC86F24CE2E0E366BBE268F3 /* AdventureWalkPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336159EBABBD40D363BD81BF /* AdventureWalkPath.swift */; };
+		EFDC00A6CED67204C9A2EFBA /* AdventureJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7303D28D565E388CC61EA5E /* AdventureJournalView.swift */; };
+		F1D65B50F6ACD7FE0F77C49D /* ScrollSearchCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD29953B09D073ACAC1B04FD /* ScrollSearchCanvas.swift */; };
+		F745EBC547D9A840204065AA /* AdventureOrigamiChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52FABD297790FE38D0868C /* AdventureOrigamiChallenge.swift */; };
+		FA848E07A01FB7DDC5EED9E2 /* world.json in Resources */ = {isa = PBXBuildFile; fileRef = 0B9A0539C0E5D034201B07FB /* world.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		003207741A3EE5308CA8BD1C /* AdventureMissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureMissionView.swift; sourceTree = "<group>"; };
+		08D44909E1EDBF7FC95DA572 /* AdventureBridgeChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureBridgeChallenge.swift; sourceTree = "<group>"; };
+		09E8C31738AF5FBAE7046B57 /* AdventureWorldArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureWorldArchive.swift; sourceTree = "<group>"; };
+		0B9A0539C0E5D034201B07FB /* world.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = world.json; sourceTree = "<group>"; };
+		0C9B65B6C78E228040DB831E /* AdventureShadowTheaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureShadowTheaterView.swift; sourceTree = "<group>"; };
+		0D9EA46CB609DABA237ABBA4 /* AdventureHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureHomeView.swift; sourceTree = "<group>"; };
+		0ED8D39DAED06DFB787D153B /* AdventurePostureObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventurePostureObserver.swift; sourceTree = "<group>"; };
+		106287AD2C46335DE02B215B /* cargo_boat_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cargo_boat_color.png; sourceTree = "<group>"; };
+		16B5DEE4533F008775F6F13A /* sailboat_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sailboat_color.png; sourceTree = "<group>"; };
+		174CDBAC6B1D04B14EC588CC /* AdventureLaptopLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureLaptopLayout.swift; sourceTree = "<group>"; };
+		175D2086FC5B48C89F0DEF83 /* camels.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = camels.jpg; sourceTree = "<group>"; };
+		19C488A4C7304CC62CB7E8D8 /* AdventurePoemStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventurePoemStore.swift; sourceTree = "<group>"; };
+		1A379B2A555104B80335ED35 /* sedan_chair.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sedan_chair.jpg; sourceTree = "<group>"; };
+		1BB799F8D9288F3858F5AFDE /* ox_cart.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ox_cart.jpg; sourceTree = "<group>"; };
+		1E24AF16614705297E068FA6 /* AdventureRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureRewardView.swift; sourceTree = "<group>"; };
+		2136665C232E63202CE82E4D /* PurchaseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseStore.swift; sourceTree = "<group>"; };
+		21F808A08939390C25CCD8C8 /* world_02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world_02.jpg; sourceTree = "<group>"; };
+		257F01F007F533081E47EF92 /* WorldTileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTileStore.swift; sourceTree = "<group>"; };
+		2BA1A01EBDF3509F47C27299 /* scaffold_tower_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scaffold_tower_color.png; sourceTree = "<group>"; };
+		2D81F79B24CBCCE1A1FF8756 /* targets.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = targets.json; sourceTree = "<group>"; };
+		2EC35890592601126B818430 /* WorldTileRaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTileRaster.swift; sourceTree = "<group>"; };
+		312B98AC11E68BA4E3A38358 /* scaffold_tower.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = scaffold_tower.jpg; sourceTree = "<group>"; };
+		32350C7D8BC627453FD3DBEE /* ScrollSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollSound.swift; sourceTree = "<group>"; };
+		336159EBABBD40D363BD81BF /* AdventureWalkPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureWalkPath.swift; sourceTree = "<group>"; };
+		36799B3C26F9825F08B8640C /* sedan_chair_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sedan_chair_color.png; sourceTree = "<group>"; };
+		3797E591F302ECC0AA2FC607 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3BAE73C1143B72D53F2D541E /* AdventureWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureWorldView.swift; sourceTree = "<group>"; };
+		3C76BC9B7AFD81AC2AA20B41 /* story.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = story.json; sourceTree = "<group>"; };
+		414534D7A5E1FE91E9290424 /* camels_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camels_color.png; sourceTree = "<group>"; };
+		43C03CD6C3FABB4256057005 /* ScrollSeeker.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ScrollSeeker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4687303899CD1F34E276FD99 /* WorldPaintingCrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldPaintingCrop.swift; sourceTree = "<group>"; };
+		474CB3CEB4A6998DF369F0D5 /* AdventureTimingChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureTimingChallenge.swift; sourceTree = "<group>"; };
+		4C0C4B64AE38635A0CD5F0A4 /* AdventurePathEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventurePathEditorView.swift; sourceTree = "<group>"; };
+		4F64D26C05CDEBE798ACFE47 /* SeekerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekerSettingsView.swift; sourceTree = "<group>"; };
+		54A391C4E57ECBFF398ECEED /* AdventureDonkeyChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureDonkeyChallenge.swift; sourceTree = "<group>"; };
+		5A23FE9033D40D51F8D6E6CC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		60F08A7E61B8767F2AECE0A5 /* WorldTileManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTileManifest.swift; sourceTree = "<group>"; };
+		6641AE7ACFA54511AFC29EB0 /* world_03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world_03.jpg; sourceTree = "<group>"; };
+		67AA94526D493E93646B2DD9 /* city_gate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = city_gate.jpg; sourceTree = "<group>"; };
+		6E2FC7CBE0B3C1B8F463FAAA /* rainbow_bridge.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rainbow_bridge.jpg; sourceTree = "<group>"; };
+		71AB8C36EB5AB7C4C44A7A4C /* AdventureStealthChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureStealthChallenge.swift; sourceTree = "<group>"; };
+		7414717E52EDFF58FA4C6E78 /* AdventureLetterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureLetterView.swift; sourceTree = "<group>"; };
+		74F16C0358BDBE96493C540D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		757412C2A398B18F5A771112 /* donkeys_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = donkeys_color.png; sourceTree = "<group>"; };
+		7919F6D5348DBE6E6F9C0853 /* wine_shop_sign_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wine_shop_sign_color.png; sourceTree = "<group>"; };
+		7C96C2C6521D64D1DBC13D27 /* donkeys.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = donkeys.jpg; sourceTree = "<group>"; };
+		7D92F076CB9140CD115A9003 /* AdventureSealPoem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureSealPoem.swift; sourceTree = "<group>"; };
+		7DF98C2432F553C8EAA4475C /* AdventureMissionSeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureMissionSeal.swift; sourceTree = "<group>"; };
+		7EDBC12BAF3E501616E54042 /* ScrollViewportMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewportMath.swift; sourceTree = "<group>"; };
+		8507E72EB695B05FE41A70A5 /* WorldFogProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldFogProgress.swift; sourceTree = "<group>"; };
+		8B3D7A21ECD3DDDA7AAC8720 /* AdventureCoupletChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureCoupletChallenge.swift; sourceTree = "<group>"; };
+		8F544AA842E758C30A1854D7 /* world_05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world_05.jpg; sourceTree = "<group>"; };
+		8FE813142E6C46916C8331EC /* ScrollArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollArchive.swift; sourceTree = "<group>"; };
+		93324374DAB3EBAA39BF41BF /* xiao_an_thief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiao_an_thief.png; sourceTree = "<group>"; };
+		9444DF3DF29D5FBBF69B959B /* WorldFogLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldFogLayer.swift; sourceTree = "<group>"; };
+		95E0AB6F3A666DEBEE4059F5 /* MembershipCustomerCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipCustomerCenterView.swift; sourceTree = "<group>"; };
+		972181EAD8DD1D6C6EB4693A /* AdventureHeroSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureHeroSprite.swift; sourceTree = "<group>"; };
+		9785ADCE247F9F563DA203C3 /* AdventurePosture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventurePosture.swift; sourceTree = "<group>"; };
+		98A31FDCB16CE718F063F914 /* AdventureGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureGame.swift; sourceTree = "<group>"; };
+		9B259E96AD48564E3533573F /* ScrollHeroCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollHeroCamera.swift; sourceTree = "<group>"; };
+		9BD469BFE7567CE3D8B1AC3B /* wine_shop_sign.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wine_shop_sign.jpg; sourceTree = "<group>"; };
+		9C4169307D3592A24067D711 /* AdventureCricketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureCricketView.swift; sourceTree = "<group>"; };
+		9DE5E8F33C1F31A4A46FBF60 /* xiao_an_scholar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiao_an_scholar.png; sourceTree = "<group>"; };
+		A93EB37FA3A715E5ABE2F3EB /* AdventureOrigamiState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureOrigamiState.swift; sourceTree = "<group>"; };
+		AD29953B09D073ACAC1B04FD /* ScrollSearchCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollSearchCanvas.swift; sourceTree = "<group>"; };
+		B034ADC724DB4F6E55C84361 /* ScrollPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPresentation.swift; sourceTree = "<group>"; };
+		B3612B6265E5B4F46FD41310 /* SeekerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekerStyle.swift; sourceTree = "<group>"; };
+		B3A8D357EA30319A9A847F95 /* sailboat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sailboat.jpg; sourceTree = "<group>"; };
+		B92BFAAAFC1172DD232517B1 /* xiao_an_child.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiao_an_child.png; sourceTree = "<group>"; };
+		BAB41EFD446CE79C69DA8936 /* cargo_boat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cargo_boat.jpg; sourceTree = "<group>"; };
+		BB9E9DBC3CDF0F3E07A853A1 /* rainbow_bridge_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rainbow_bridge_color.png; sourceTree = "<group>"; };
+		BF440879A955A198ACA03CA6 /* AdventureArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureArchive.swift; sourceTree = "<group>"; };
+		C1360D184DE7B189EB07D25A /* AdventureChoiceChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureChoiceChallenge.swift; sourceTree = "<group>"; };
+		C15C449E353874E4BFF330A7 /* world_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world_01.jpg; sourceTree = "<group>"; };
+		C527101147F6D37F1D87250C /* world_06.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world_06.jpg; sourceTree = "<group>"; };
+		C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C9EDA82F2E31684D8BCBFF26 /* AdventureExamChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureExamChallenge.swift; sourceTree = "<group>"; };
+		CC52FABD297790FE38D0868C /* AdventureOrigamiChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureOrigamiChallenge.swift; sourceTree = "<group>"; };
+		CD31D584F22D158E460209D0 /* AdventureHeroMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureHeroMotion.swift; sourceTree = "<group>"; };
+		CD63DA3612E9289E069E5EEE /* AdventureForkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureForkView.swift; sourceTree = "<group>"; };
+		D6EE2707E6F79FEB3B747890 /* ox_cart_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ox_cart_color.png; sourceTree = "<group>"; };
+		DBC7131F2441A842A982A5C2 /* AdventureMemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureMemoryView.swift; sourceTree = "<group>"; };
+		E3E67C4DACC63BB2CA4F884E /* AdventureSealAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureSealAlbumView.swift; sourceTree = "<group>"; };
+		E53A4A46884BF87106D27450 /* AdventureBottleChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureBottleChallenge.swift; sourceTree = "<group>"; };
+		E993477A6D5A7D27A5B98C43 /* city_gate_color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = city_gate_color.png; sourceTree = "<group>"; };
+		ECC110C589A09F300A251827 /* SeekerPrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekerPrivacyView.swift; sourceTree = "<group>"; };
+		ED1C20F6837B324DB002BFD0 /* world_04.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world_04.jpg; sourceTree = "<group>"; };
+		F0B24767503B5D48865E19A5 /* tiles.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tiles.json; sourceTree = "<group>"; };
+		F28E5F8A089C21BB8495DA16 /* AdventureControlDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureControlDeck.swift; sourceTree = "<group>"; };
+		F56684CCCADA933D90013640 /* AdventureEndingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureEndingView.swift; sourceTree = "<group>"; };
+		F7303D28D565E388CC61EA5E /* AdventureJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventureJournalView.swift; sourceTree = "<group>"; };
+		F936D8CC535EB33088A969BB /* world.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = world.jpg; sourceTree = "<group>"; };
+		FC38A6B42DF5A3F203DF7371 /* MembershipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CF9D85F321FAB4964607911C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D34F99BB61A4BC947D26156 /* RevenueCat in Frameworks */,
+				7D9BEA1527D06E1EC7453CEC /* RevenueCatUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		09F3B15974E19479FDC02D42 /* clues */ = {
+			isa = PBXGroup;
+			children = (
+				175D2086FC5B48C89F0DEF83 /* camels.jpg */,
+				BAB41EFD446CE79C69DA8936 /* cargo_boat.jpg */,
+				67AA94526D493E93646B2DD9 /* city_gate.jpg */,
+				7C96C2C6521D64D1DBC13D27 /* donkeys.jpg */,
+				1BB799F8D9288F3858F5AFDE /* ox_cart.jpg */,
+				6E2FC7CBE0B3C1B8F463FAAA /* rainbow_bridge.jpg */,
+				B3A8D357EA30319A9A847F95 /* sailboat.jpg */,
+				312B98AC11E68BA4E3A38358 /* scaffold_tower.jpg */,
+				1A379B2A555104B80335ED35 /* sedan_chair.jpg */,
+				9BD469BFE7567CE3D8B1AC3B /* wine_shop_sign.jpg */,
+			);
+			path = clues;
+			sourceTree = "<group>";
+		};
+		0AFBD4FCD0AAD221A43140FA /* colorized */ = {
+			isa = PBXGroup;
+			children = (
+				414534D7A5E1FE91E9290424 /* camels_color.png */,
+				106287AD2C46335DE02B215B /* cargo_boat_color.png */,
+				E993477A6D5A7D27A5B98C43 /* city_gate_color.png */,
+				757412C2A398B18F5A771112 /* donkeys_color.png */,
+				D6EE2707E6F79FEB3B747890 /* ox_cart_color.png */,
+				BB9E9DBC3CDF0F3E07A853A1 /* rainbow_bridge_color.png */,
+				16B5DEE4533F008775F6F13A /* sailboat_color.png */,
+				2BA1A01EBDF3509F47C27299 /* scaffold_tower_color.png */,
+				36799B3C26F9825F08B8640C /* sedan_chair_color.png */,
+				7919F6D5348DBE6E6F9C0853 /* wine_shop_sign_color.png */,
+			);
+			path = colorized;
+			sourceTree = "<group>";
+		};
+		1F2DE413CF2CB54988158172 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BF440879A955A198ACA03CA6 /* AdventureArchive.swift */,
+				E53A4A46884BF87106D27450 /* AdventureBottleChallenge.swift */,
+				08D44909E1EDBF7FC95DA572 /* AdventureBridgeChallenge.swift */,
+				C1360D184DE7B189EB07D25A /* AdventureChoiceChallenge.swift */,
+				F28E5F8A089C21BB8495DA16 /* AdventureControlDeck.swift */,
+				8B3D7A21ECD3DDDA7AAC8720 /* AdventureCoupletChallenge.swift */,
+				9C4169307D3592A24067D711 /* AdventureCricketView.swift */,
+				54A391C4E57ECBFF398ECEED /* AdventureDonkeyChallenge.swift */,
+				F56684CCCADA933D90013640 /* AdventureEndingView.swift */,
+				C9EDA82F2E31684D8BCBFF26 /* AdventureExamChallenge.swift */,
+				CD63DA3612E9289E069E5EEE /* AdventureForkView.swift */,
+				98A31FDCB16CE718F063F914 /* AdventureGame.swift */,
+				CD31D584F22D158E460209D0 /* AdventureHeroMotion.swift */,
+				972181EAD8DD1D6C6EB4693A /* AdventureHeroSprite.swift */,
+				0D9EA46CB609DABA237ABBA4 /* AdventureHomeView.swift */,
+				F7303D28D565E388CC61EA5E /* AdventureJournalView.swift */,
+				174CDBAC6B1D04B14EC588CC /* AdventureLaptopLayout.swift */,
+				7414717E52EDFF58FA4C6E78 /* AdventureLetterView.swift */,
+				DBC7131F2441A842A982A5C2 /* AdventureMemoryView.swift */,
+				7DF98C2432F553C8EAA4475C /* AdventureMissionSeal.swift */,
+				003207741A3EE5308CA8BD1C /* AdventureMissionView.swift */,
+				CC52FABD297790FE38D0868C /* AdventureOrigamiChallenge.swift */,
+				A93EB37FA3A715E5ABE2F3EB /* AdventureOrigamiState.swift */,
+				4C0C4B64AE38635A0CD5F0A4 /* AdventurePathEditorView.swift */,
+				19C488A4C7304CC62CB7E8D8 /* AdventurePoemStore.swift */,
+				9785ADCE247F9F563DA203C3 /* AdventurePosture.swift */,
+				0ED8D39DAED06DFB787D153B /* AdventurePostureObserver.swift */,
+				1E24AF16614705297E068FA6 /* AdventureRewardView.swift */,
+				E3E67C4DACC63BB2CA4F884E /* AdventureSealAlbumView.swift */,
+				7D92F076CB9140CD115A9003 /* AdventureSealPoem.swift */,
+				0C9B65B6C78E228040DB831E /* AdventureShadowTheaterView.swift */,
+				71AB8C36EB5AB7C4C44A7A4C /* AdventureStealthChallenge.swift */,
+				474CB3CEB4A6998DF369F0D5 /* AdventureTimingChallenge.swift */,
+				336159EBABBD40D363BD81BF /* AdventureWalkPath.swift */,
+				09E8C31738AF5FBAE7046B57 /* AdventureWorldArchive.swift */,
+				3BAE73C1143B72D53F2D541E /* AdventureWorldView.swift */,
+				5A23FE9033D40D51F8D6E6CC /* App.swift */,
+				3797E591F302ECC0AA2FC607 /* Assets.xcassets */,
+				74F16C0358BDBE96493C540D /* ContentView.swift */,
+				C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */,
+				95E0AB6F3A666DEBEE4059F5 /* MembershipCustomerCenterView.swift */,
+				FC38A6B42DF5A3F203DF7371 /* MembershipView.swift */,
+				2136665C232E63202CE82E4D /* PurchaseStore.swift */,
+				8FE813142E6C46916C8331EC /* ScrollArchive.swift */,
+				9B259E96AD48564E3533573F /* ScrollHeroCamera.swift */,
+				B034ADC724DB4F6E55C84361 /* ScrollPresentation.swift */,
+				AD29953B09D073ACAC1B04FD /* ScrollSearchCanvas.swift */,
+				32350C7D8BC627453FD3DBEE /* ScrollSound.swift */,
+				7EDBC12BAF3E501616E54042 /* ScrollViewportMath.swift */,
+				ECC110C589A09F300A251827 /* SeekerPrivacyView.swift */,
+				4F64D26C05CDEBE798ACFE47 /* SeekerSettingsView.swift */,
+				B3612B6265E5B4F46FD41310 /* SeekerStyle.swift */,
+				9444DF3DF29D5FBBF69B959B /* WorldFogLayer.swift */,
+				8507E72EB695B05FE41A70A5 /* WorldFogProgress.swift */,
+				4687303899CD1F34E276FD99 /* WorldPaintingCrop.swift */,
+				60F08A7E61B8767F2AECE0A5 /* WorldTileManifest.swift */,
+				2EC35890592601126B818430 /* WorldTileRaster.swift */,
+				257F01F007F533081E47EF92 /* WorldTileStore.swift */,
+				B2BA64018F404B67235D7D5F /* Resources */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		293D0FF827366B513839236A = {
+			isa = PBXGroup;
+			children = (
+				1F2DE413CF2CB54988158172 /* App */,
+				AC523591AC7BE9275003D2DB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3C5F3C8D878A3DCE730A6DCE /* tiles */ = {
+			isa = PBXGroup;
+			children = (
+				F0B24767503B5D48865E19A5 /* tiles.json */,
+				C15C449E353874E4BFF330A7 /* world_01.jpg */,
+				21F808A08939390C25CCD8C8 /* world_02.jpg */,
+				6641AE7ACFA54511AFC29EB0 /* world_03.jpg */,
+				ED1C20F6837B324DB002BFD0 /* world_04.jpg */,
+				8F544AA842E758C30A1854D7 /* world_05.jpg */,
+				C527101147F6D37F1D87250C /* world_06.jpg */,
+			);
+			path = tiles;
+			sourceTree = "<group>";
+		};
+		46B1E5E84EFED6A459FF614B /* Characters */ = {
+			isa = PBXGroup;
+			children = (
+				B92BFAAAFC1172DD232517B1 /* xiao_an_child.png */,
+				9DE5E8F33C1F31A4A46FBF60 /* xiao_an_scholar.png */,
+				93324374DAB3EBAA39BF41BF /* xiao_an_thief.png */,
+			);
+			path = Characters;
+			sourceTree = "<group>";
+		};
+		853A591C7835294EDB0F6695 /* World */ = {
+			isa = PBXGroup;
+			children = (
+				F936D8CC535EB33088A969BB /* world.jpg */,
+				0B9A0539C0E5D034201B07FB /* world.json */,
+				3C5F3C8D878A3DCE730A6DCE /* tiles */,
+			);
+			path = World;
+			sourceTree = "<group>";
+		};
+		AC523591AC7BE9275003D2DB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				43C03CD6C3FABB4256057005 /* ScrollSeeker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2BA64018F404B67235D7D5F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E3139693B945D0299B0BCD18 /* Qingming */,
+				853A591C7835294EDB0F6695 /* World */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E3139693B945D0299B0BCD18 /* Qingming */ = {
+			isa = PBXGroup;
+			children = (
+				3C76BC9B7AFD81AC2AA20B41 /* story.json */,
+				2D81F79B24CBCCE1A1FF8756 /* targets.json */,
+				46B1E5E84EFED6A459FF614B /* Characters */,
+				09F3B15974E19479FDC02D42 /* clues */,
+				0AFBD4FCD0AAD221A43140FA /* colorized */,
+			);
+			path = Qingming;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E7E14F15E647C38EF484478F /* ScrollSeeker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F69B5797C04108DD7935242F /* Build configuration list for PBXNativeTarget "ScrollSeeker" */;
+			buildPhases = (
+				FD1975809794EBD85A5711C8 /* Sources */,
+				65DAE5A192BF3ED5249F4C54 /* Resources */,
+				CF9D85F321FAB4964607911C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScrollSeeker;
+			packageProductDependencies = (
+				AF99E5ABEBF44E30998365EC /* RevenueCat */,
+				32F650F5441A7124E8D13A36 /* RevenueCatUI */,
+			);
+			productName = ScrollSeeker;
+			productReference = 43C03CD6C3FABB4256057005 /* ScrollSeeker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0FBAE303E3CFC2ABAC876A77 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 293D0FF827366B513839236A;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C5372C7CD56D615B9B57605C /* XCRemoteSwiftPackageReference "purchases-ios" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AC523591AC7BE9275003D2DB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E7E14F15E647C38EF484478F /* ScrollSeeker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		65DAE5A192BF3ED5249F4C54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98A78DBA0550ACDF197C7EEE /* Assets.xcassets in Resources */,
+				E8AF00F02CCB52CEA07CBC01 /* camels.jpg in Resources */,
+				AE47A6B91E8835607CC85CF4 /* camels_color.png in Resources */,
+				6233FEDB7200B6E86B5E113C /* cargo_boat.jpg in Resources */,
+				3CC06AFEB7E5A467D15BE317 /* cargo_boat_color.png in Resources */,
+				0A577C45BC0D889221E94964 /* city_gate.jpg in Resources */,
+				83C7C20A577914B2B27ABAFC /* city_gate_color.png in Resources */,
+				24EA7B0B0D02C4EAF94A578D /* donkeys.jpg in Resources */,
+				101321A541899C6419289272 /* donkeys_color.png in Resources */,
+				D774155C3AAB1CC1454A28D9 /* ox_cart.jpg in Resources */,
+				695444E158D43BCAED424C9C /* ox_cart_color.png in Resources */,
+				67D4A053A81A0B951FDDBE02 /* rainbow_bridge.jpg in Resources */,
+				99F6FC2C3E5869FDE4D6D668 /* rainbow_bridge_color.png in Resources */,
+				59051CDE913EC8E3BF2E0601 /* sailboat.jpg in Resources */,
+				7BEDC5B1A3C6A4DBC8CB27AB /* sailboat_color.png in Resources */,
+				AC10B78C4F58D3D67E240F0E /* scaffold_tower.jpg in Resources */,
+				B00CC47D4DC411CA55F858A1 /* scaffold_tower_color.png in Resources */,
+				6C8F6265234A457E8DB50518 /* sedan_chair.jpg in Resources */,
+				DC420CE36C14D0BC729BA41E /* sedan_chair_color.png in Resources */,
+				CD6D6F5821F7B17F050B8B8A /* story.json in Resources */,
+				3E7E52936EC098560418E4EC /* targets.json in Resources */,
+				57C68715E4F7DAC5F6EA9F0C /* tiles.json in Resources */,
+				36809FBE7E0FEC6028C8C124 /* wine_shop_sign.jpg in Resources */,
+				295FDED0A58616283126A1C5 /* wine_shop_sign_color.png in Resources */,
+				94C8284A2553DFF5910EDB8E /* world.jpg in Resources */,
+				FA848E07A01FB7DDC5EED9E2 /* world.json in Resources */,
+				DA8B9B9C35616F750ECF698C /* world_01.jpg in Resources */,
+				1089CE7E1DB1644021D9033B /* world_02.jpg in Resources */,
+				42149156948D24A5AE5C67D3 /* world_03.jpg in Resources */,
+				7A6606C020A2EBC7216ACA5D /* world_04.jpg in Resources */,
+				9C8D527E1659CA95958EE190 /* world_05.jpg in Resources */,
+				CF270FC912F561C405DFFE29 /* world_06.jpg in Resources */,
+				20748CDCCEE0464C2CB094F2 /* xiao_an_child.png in Resources */,
+				509604458272BE0D08723D61 /* xiao_an_scholar.png in Resources */,
+				98B551A350E717C30A3E6D24 /* xiao_an_thief.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD1975809794EBD85A5711C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2907CDAFDFC3D75D0826C45E /* AdventureArchive.swift in Sources */,
+				7530795ADBA3ED34B0838B77 /* AdventureBottleChallenge.swift in Sources */,
+				909CBD42AE66D8D0B09DEDFE /* AdventureBridgeChallenge.swift in Sources */,
+				BD9E01FA73C4E4440F15FD46 /* AdventureChoiceChallenge.swift in Sources */,
+				0FB795B99E15BCD33B108AEC /* AdventureControlDeck.swift in Sources */,
+				CC00682CE716498C791345C2 /* AdventureCoupletChallenge.swift in Sources */,
+				45A5E2112B599FAD5FB6BC2A /* AdventureCricketView.swift in Sources */,
+				0A32EE5075C304CF56509A38 /* AdventureDonkeyChallenge.swift in Sources */,
+				48EB943720F66CF604D5EABE /* AdventureEndingView.swift in Sources */,
+				3B5356FD662F6DD983F55A46 /* AdventureExamChallenge.swift in Sources */,
+				07818F5BCE68D98A7BD6C123 /* AdventureForkView.swift in Sources */,
+				70D860B54C84C2FB971B918A /* AdventureGame.swift in Sources */,
+				A2A6FF8BB4EA7BFBF18C4E84 /* AdventureHeroMotion.swift in Sources */,
+				C72243B1CBFD98F1EC71EB1E /* AdventureHeroSprite.swift in Sources */,
+				AA4EE94103FC36BBB135C447 /* AdventureHomeView.swift in Sources */,
+				EFDC00A6CED67204C9A2EFBA /* AdventureJournalView.swift in Sources */,
+				DB2265BB6FC5316A9C3F0610 /* AdventureLaptopLayout.swift in Sources */,
+				DBCEBD2B1AAC01CEC160046B /* AdventureLetterView.swift in Sources */,
+				6F559713186D6C122B0730FA /* AdventureMemoryView.swift in Sources */,
+				1FFB2C0ACA6DC7A2809396B3 /* AdventureMissionSeal.swift in Sources */,
+				1D936E86614AD08254F41DD6 /* AdventureMissionView.swift in Sources */,
+				F745EBC547D9A840204065AA /* AdventureOrigamiChallenge.swift in Sources */,
+				61F18F30DE759BC0EC4CFE2C /* AdventureOrigamiState.swift in Sources */,
+				4D67565DDE2DEC94054F7434 /* AdventurePathEditorView.swift in Sources */,
+				B05819CE76AE1866771250FC /* AdventurePoemStore.swift in Sources */,
+				5D0880650DE020138927A586 /* AdventurePosture.swift in Sources */,
+				1B8F351B101BF14C8D52EC6E /* AdventurePostureObserver.swift in Sources */,
+				A06468A6D854AF94FCCF542F /* AdventureRewardView.swift in Sources */,
+				5EFE53EDB7C3004A0271789F /* AdventureSealAlbumView.swift in Sources */,
+				CD7CFCB47A39D1A08B9DE24C /* AdventureSealPoem.swift in Sources */,
+				4015FE9306E08F87320F6E71 /* AdventureShadowTheaterView.swift in Sources */,
+				A5379C299AB32A1F114F6043 /* AdventureStealthChallenge.swift in Sources */,
+				3AAC1621915FB90A79975A74 /* AdventureTimingChallenge.swift in Sources */,
+				EC86F24CE2E0E366BBE268F3 /* AdventureWalkPath.swift in Sources */,
+				72EFA66EA4F202FD4D5AC02D /* AdventureWorldArchive.swift in Sources */,
+				4393553A912B8C5E35E1078B /* AdventureWorldView.swift in Sources */,
+				05880A506BEF318EF90BBD2A /* App.swift in Sources */,
+				CEAB5D54088F68AD5E97C773 /* ContentView.swift in Sources */,
+				C457F1E2BD051922AF07707C /* MembershipCustomerCenterView.swift in Sources */,
+				3DE31EE853DDC75DA36D52AA /* MembershipView.swift in Sources */,
+				A4854E721CA6973864D3049C /* PurchaseStore.swift in Sources */,
+				2146A51D4482F6C82DBCBA5F /* ScrollArchive.swift in Sources */,
+				1DAA18001AB843A9FEB488A7 /* ScrollHeroCamera.swift in Sources */,
+				08C9C2DF27DB88B3F71AA43B /* ScrollPresentation.swift in Sources */,
+				F1D65B50F6ACD7FE0F77C49D /* ScrollSearchCanvas.swift in Sources */,
+				4866D62EFF0F6F4C4A0FE852 /* ScrollSound.swift in Sources */,
+				B16AE0C114B1B99EDFF2E433 /* ScrollViewportMath.swift in Sources */,
+				29C74C219386E370644F2E1C /* SeekerPrivacyView.swift in Sources */,
+				CF9B54670204B0D115419AA3 /* SeekerSettingsView.swift in Sources */,
+				90F3184A525553A54AE46562 /* SeekerStyle.swift in Sources */,
+				77959517B5749ADA37BCAE11 /* WorldFogLayer.swift in Sources */,
+				9990C8503500942E234654A4 /* WorldFogProgress.swift in Sources */,
+				38FE1A0E7C0808C67C3A5A28 /* WorldPaintingCrop.swift in Sources */,
+				142D49B65FACC7B6EDDA314D /* WorldTileManifest.swift in Sources */,
+				0D611B9B954E742260C2B046 /* WorldTileRaster.swift in Sources */,
+				91820A66C1455667B756F9EB /* WorldTileStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		036FCF7C4B48C154279F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3AF575D7E807B6FB4546CAF3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.bitrig.new.a30baecf-45e9-4613-abb3-bf5b54788ff5";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		86327DADDF78A9044C1ACC6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "app.bitrig.new.a30baecf-45e9-4613-abb3-bf5b54788ff5";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		999683C4B5329A72D12AD584 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				999683C4B5329A72D12AD584 /* Debug */,
+				036FCF7C4B48C154279F289D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F69B5797C04108DD7935242F /* Build configuration list for PBXNativeTarget "ScrollSeeker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3AF575D7E807B6FB4546CAF3 /* Debug */,
+				86327DADDF78A9044C1ACC6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C5372C7CD56D615B9B57605C /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = exactVersion;
+				version = 5.80.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		32F650F5441A7124E8D13A36 /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C5372C7CD56D615B9B57605C /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCatUI;
+		};
+		AF99E5ABEBF44E30998365EC /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C5372C7CD56D615B9B57605C /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+}

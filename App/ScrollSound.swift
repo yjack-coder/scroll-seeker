@@ -19,6 +19,7 @@ final class ScrollSound {
   func unroll() { play(.unroll) }
   func found() { play(.found) }
   func complete() { play(.complete) }
+  func paperFold() { play(.paperFold) }
 
   private func play(_ cue: ScrollSoundCue) {
     guard UserDefaults.standard.bool(forKey: "seeker.soundEnabled") else {
@@ -92,7 +93,7 @@ final class ScrollSound {
       let time = Double(frame) / sampleRate
       var signal = 0.0
       switch cue {
-      case .unroll:
+      case .unroll, .paperFold:
         // Two smoothed noise bands suggest the soft drag of paper, without hiss.
         noiseState = noiseState &* 6_364_136_223_846_793_005 &+ 1
         let whiteNoise = Double(noiseState >> 40) / 8_388_608.0 - 1
@@ -100,7 +101,7 @@ final class ScrollSound {
         softerNoise += 0.012 * (whiteNoise - softerNoise)
         let envelope = pow(max(0, sin(.pi * time / cue.duration)), 1.6)
         let undulation = 0.80 + 0.20 * sin(2 * .pi * 2.1 * time)
-        signal = (lowNoise - softerNoise) * envelope * undulation * 0.55
+        signal = (lowNoise - softerNoise) * envelope * undulation * (cue == .paperFold ? 1.1 : 0.55)
       case .found:
         signal = pluck(at: time, frequency: 220, duration: cue.duration) * 0.32
       case .complete:
@@ -130,12 +131,14 @@ private enum ScrollSoundCue: CaseIterable {
   case unroll
   case found
   case complete
+  case paperFold
 
   var duration: Double {
     switch self {
     case .unroll: 1.45
     case .found: 1.8
     case .complete: 2.8
+    case .paperFold: 0.27
     }
   }
 }

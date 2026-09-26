@@ -9,7 +9,7 @@ final class PurchaseStore {
   private(set) var isLoading = false
   private(set) var isConfigured = false
   private(set) var offering: Offering?
-  private(set) var planName = "Free · The River"
+  private(set) var planName = "Free · The Soy Sauce Errand"
   private(set) var expirationDate: Date?
   private(set) var restoreMessage: String?
   var errorMessage: String?
@@ -36,7 +36,7 @@ final class PurchaseStore {
       let apiKey = Bundle.main.object(forInfoDictionaryKey: "RevenueCatAPIKey") as? String ?? ""
       guard apiKey.hasPrefix("appl_") else {
         errorMessage =
-          "Purchases are not available in this release yet. You can still explore The River."
+          "Purchases are not available in this release yet. You can still play The Soy Sauce Errand and return home."
         return
       }
       Purchases.logLevel = .warn
@@ -104,7 +104,7 @@ final class PurchaseStore {
     isPro = entitlement != nil
     expirationDate = entitlement?.expirationDate
     guard let entitlement else {
-      planName = "Free · The River"
+      planName = "Free · The Soy Sauce Errand"
       return
     }
     switch entitlement.productIdentifier {

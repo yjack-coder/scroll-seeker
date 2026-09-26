@@ -4,266 +4,383 @@ struct ContentView: View {
   var purchases: PurchaseStore
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.scenePhase) private var scenePhase
-  @State private var game: SeekerGame?
+  @State private var game: AdventureGame?
+  @State private var painting: ScrollArchive?
+  @State private var posture = AdventurePostureStore()
   @State private var loadError: String?
-  @State private var inChapter = false
   @State private var isOpen = false
   @State private var unroll = 0.0
-  @State private var viewport: ClosedRange<Double> = 0.94...1
-  @State private var hintTarget: ScrollTarget?
-  @State private var hintTrigger = 0
-  @State private var feedback: SearchTapFeedback?
-  @State private var pendingDiscovery: ScrollTarget?
-  @State private var story: ScrollTarget?
-  @State private var showCompletion = false
+  @State private var transitioning = false
+  @State private var hasHingeData = false
+  @State private var panel: AdventurePanel?
+  @State private var pendingEnding: AdventureAct?
   @State private var showSettings = false
   @State private var showMembership = false
-  @State private var museumMode = false
+  @State private var celebrating = false
+  @State private var sealingLetter = false
+  @State private var dismissedFork = false
   @State private var stampCount = 0
-  @State private var unfoldCount = 0
-  @State private var discoveryTask: Task<Void, Never>?
+  @State private var foldCount = 0
+  @State private var jumpCount = 0
+  @State private var lanternLit = false
+  @State private var deckMessage: String?
   @State private var transitionTask: Task<Void, Never>?
-  @State private var isTransitioning = false
-  @State private var hasHingeData = false
+  @State private var celebrationTask: Task<Void, Never>?
+  @State private var openRequestTask: Task<Void, Never>?
 
-  private var searching: Bool {
-    inChapter && isOpen && !isTransitioning && pendingDiscovery == nil && story == nil && !showCompletion
-      && !showSettings && !showMembership && scenePhase == .active
+  private var canWalk: Bool {
+    isOpen && !transitioning && panel == nil && !showSettings && !showMembership
+      && !celebrating && !sealingLetter && scenePhase == .active
+      && (posture.current == .open || posture.current == .laptop)
+      && (game?.activeAct?.free == true || purchases.isPro)
+  }
+  private var nearFork: Bool {
+    guard let game else { return false }
+    return game.forkUnlocked && game.activeActID == "act1" && abs(game.heroX - game.bridgeX) < 0.02
+  }
+  private var examIsPresented: Bool {
+    if case .mission(let mission) = panel { return mission.id == "a5" }
+    return false
   }
 
   var body: some View {
     NavigationStack {
       Group {
-        if let game {
+        if let game, let painting {
           GeometryReader { geometry in
             ZStack {
-              if inChapter {
-                SeekerClueView(game: game) { setOpen(true) }
-                  .opacity(isOpen ? 0 : 1).allowsHitTesting(!isOpen).accessibilityHidden(isOpen)
-                painting(game: game, size: geometry.size)
-              } else {
-                SeekerHomeView(game: game, isPro: purchases.isPro, selectChapter: begin)
-              }
+              AdventureHomeView(game: game, isPro: purchases.isPro,
+                onUnfold: requestOpen, onPaywall: { showMembership = true },
+                onSettings: { showSettings = true }, onChoosePath: {
+                  dismissedFork = false
+                  panel = .fork
+                }, isVisible: !isOpen)
+                .allowsHitTesting(!isOpen && !transitioning && !celebrating && !sealingLetter)
+                .accessibilityHidden(isOpen)
+              worldLayer(game: game, painting: painting, geometry: geometry)
+                .modifier(ScrollUnrollPresentation(progress: unroll, viewportSize: geometry.size, reduceMotion: reduceMotion))
+                .allowsHitTesting(isOpen && !transitioning && !celebrating && !sealingLetter)
+                .accessibilityHidden(!isOpen)
+              if sealingLetter { AdventureLetterView(onFinished: letterFinished).zIndex(10) }
             }
             .onChange(of: geometry.size) { old, new in
-              guard inChapter, !hasHingeData, abs(new.width - old.width) > 160 else { return }
-              setOpen(new.width > 600)
+              guard !hasHingeData, abs(new.width - old.width) > 160, !transitioning else { return }
+              posture.set(new.width > 600 ? .open : .folded)
             }
           }
-          .modifier(SeekerHingeObserver(enabled: inChapter, change: followHinge))
+          .ignoresSafeArea(.container, edges: isOpen ? .all : [])
+          .modifier(AdventurePostureObserver(posture: posture) { hasHingeData = true })
         } else if let loadError {
-          ContentUnavailableView {
-            Text("The scroll could not be opened")
-          } description: { Text(loadError) } actions: {
-            Button("Try Again", systemImage: "arrow.clockwise", action: load)
-          }
+          ContentUnavailableView { Text("The story could not be opened") }
+            description: { Text(loadError) }
+            actions: { Button("Try Again", systemImage: "arrow.clockwise", action: load) }
         } else {
-          ProgressView("Opening the archive…").frame(maxWidth: .infinity, maxHeight: .infinity)
+          ProgressView("Opening Xiao An’s story…").frame(maxWidth: .infinity, maxHeight: .infinity)
         }
       }
       .background(SeekerStyle.paper)
-      .navigationTitle(inChapter ? (game?.chapter?.englishName ?? "Scroll Seeker") : "")
+      .navigationTitle(isOpen ? "" : "小安的家")
       .navigationBarTitleDisplayMode(.inline)
-      .toolbarBackground(inChapter ? SeekerStyle.paper : SeekerStyle.indigo, for: .navigationBar)
-      .toolbarBackground(.visible, for: .navigationBar)
-      .toolbarColorScheme(inChapter ? .light : .dark, for: .navigationBar)
+      .toolbarBackground(SeekerStyle.paper, for: .navigationBar)
+      .toolbar(isOpen ? .hidden : .visible, for: .navigationBar)
       .toolbar {
-        if inChapter {
-          ToolbarItem(placement: .topBarLeading) {
-            Button("Chapters", systemImage: "chevron.left", action: leaveChapter)
+        if !isOpen {
+          ToolbarItem(placement: .topBarTrailing) {
+            Button("Open", action: requestOpen).disabled(celebrating || sealingLetter)
+              .accessibilityLabel("Unfold and resume the adventure")
           }
           ToolbarItem(placement: .topBarTrailing) {
-            Button(isOpen ? "Folded" : "Open") { setOpen(!isOpen) }
-              .accessibilityLabel(isOpen ? "Fold scroll, show clue" : "Open scroll, search painting")
+            Picker(selection: Binding(get: { posture.current }, set: { posture.set($0) })) {
+              ForEach(AdventurePosture.allCases) { value in Text(value.name).tag(value) }
+            } label: { Label("Posture", systemImage: "book.closed") }
+              .pickerStyle(.menu).labelStyle(.iconOnly)
           }
         }
-        ToolbarItem(placement: .topBarTrailing) {
-          Button("Settings", systemImage: "gearshape") { showSettings = true }
-            .foregroundStyle(inChapter ? SeekerStyle.indigo : SeekerStyle.paper)
-            .disabled(pendingDiscovery != nil)
+      }
+    }
+    .statusBarHidden(isOpen)
+    .task { if game == nil { load() } }
+    .onChange(of: posture.current) { _, value in postureChanged(value) }
+    .onChange(of: canWalk) { _, active in
+      if active {
+        game?.startWorld()
+        _ = game?.beginHomeDepartureIfNeeded()
+        considerFork()
+      } else { game?.stopWorld() }
+    }
+    .task(id: game?.pendingMission?.id) {
+      guard let mission = game?.pendingMission else { return }
+      // Give the actual painted NPC's glow a moment before the conversation.
+      if mission.trigger != .fold {
+        do { try await Task.sleep(for: .milliseconds(reduceMotion ? 150 : 650)) } catch { return }
+      }
+      guard !Task.isCancelled, game?.pendingMission?.id == mission.id, panel == nil else { return }
+      panel = .mission(mission)
+    }
+    .onChange(of: nearFork) { _, near in
+      if near { considerFork() } else { dismissedFork = false }
+    }
+    .onChange(of: panel) { old, new in
+      if old == .fork && new == nil { dismissedFork = true }
+    }
+    .onChange(of: purchases.isPro) { _, pro in
+      if !pro, game?.activeAct?.free == false { posture.set(.folded) }
+      if !pro { _ = game?.selectOutfit(.child, isPro: false) }
+      if pro, posture.current != .folded { openWorld() }
+    }
+    .sensoryFeedback(.impact(weight: .heavy, intensity: 0.8), trigger: stampCount)
+    .sensoryFeedback(.impact(weight: .light, intensity: 0.35), trigger: foldCount)
+    .sensoryFeedback(.selection, trigger: posture.changeCount)
+    .sensoryFeedback(.impact(weight: .light, intensity: 0.25), trigger: jumpCount)
+    .sheet(isPresented: $showSettings) {
+      SeekerSettingsView(purchases: purchases)
+        .modifier(AdventurePostureObserver(posture: posture) { hasHingeData = true })
+    }
+    .sheet(isPresented: $showMembership) {
+      MembershipView(purchaseStore: purchases)
+        .modifier(AdventurePostureObserver(posture: posture) { hasHingeData = true })
+    }
+    .fullScreenCover(item: $panel, onDismiss: panelDismissed) { presentation in
+      Group {
+      if let game, let painting {
+        switch presentation {
+        case .mission(let mission):
+          AdventureMissionView(mission: mission, posture: posture, onComplete: { complete(mission) }, onLeave: {
+            game.dismissMission(); panel = nil
+          })
+        case .reward(let mission):
+          AdventureRewardView(archive: game.archive, mission: mission, stage: game.selectedOutfit) {
+            if let ending = pendingEnding { pendingEnding = nil; panel = .ending(ending) }
+            else { panel = nil }
+          }
+        case .ending(let act):
+          if posture.current == .tent {
+            AdventureShadowTheaterView(game: game, posture: posture, ending: act, onContinue: { finishEnding(act) })
+          } else {
+            AdventureEndingView(act: act) { finishEnding(act) }
+              .overlay(alignment: .topTrailing) {
+                Button("Tent theater", systemImage: "house") { posture.set(.tent) }
+                  .font(.caption).padding(16)
+              }
+          }
+        case .fork:
+          AdventureForkView(purchases: purchases, posture: posture, onChoose: { stage in
+            if game.selectPath(stage, isPro: purchases.isPro) { panel = nil }
+          }, onClose: { dismissedFork = true; panel = nil })
+        case .pathEditor:
+          AdventurePathEditorView(game: game, painting: painting) { panel = nil }
+        case .cricket:
+          AdventureCricketView(game: game, posture: posture) { panel = nil }
         }
       }
-    }
-    .sensoryFeedback(.impact(weight: .heavy, intensity: 0.7), trigger: stampCount)
-    .sensoryFeedback(.impact(weight: .light, intensity: 0.35), trigger: unfoldCount)
-    .task { if game == nil { load() } }
-    .onChange(of: searching) { _, value in game?.setSearching(value) }
-    .onChange(of: purchases.isPro) { _, isPro in
-      if !isPro {
-        museumMode = false
-        if game?.chapter?.free == false { leaveChapter() }
       }
+      .modifier(AdventurePostureObserver(posture: posture) { hasHingeData = true })
     }
-    .sheet(isPresented: $showSettings) { SeekerSettingsView(purchases: purchases) }
-    .sheet(isPresented: $showMembership) { MembershipView(purchaseStore: purchases) }
-    .sheet(item: $story, onDismiss: finishStory) { target in
-      SeekerStoryView(target: target, isNew: pendingDiscovery != nil, chapterComplete: game?.chapterComplete ?? false) { story = nil }
-        .presentationDetents([.large]).presentationDragIndicator(.visible)
-    }
-    .sheet(isPresented: $showCompletion) {
-      if let game {
-        SeekerCompletionView(game: game) {
-          showCompletion = false
-          leaveChapter()
-        } explore: { showCompletion = false }
-          .presentationDetents([.large]).presentationDragIndicator(.visible)
+  }
+
+  @ViewBuilder
+  private func worldLayer(game: AdventureGame, painting: ScrollArchive, geometry: GeometryProxy) -> some View {
+    ZStack {
+      if posture.current == .laptop {
+        VStack(spacing: 0) {
+          world(game: game, painting: painting, controls: false)
+            .frame(height: AdventureCrease.upperHeight(in: geometry))
+          AdventureControlDeck(game: game, enabled: canWalk, talk: talk,
+            use: useItem, jump: { jumpCount += 1 }, message: deckMessage,
+            posture: posture, onHome: { posture.set(.folded) }, onPathEditor: { panel = .pathEditor })
+        }
+      } else {
+        world(game: game, painting: painting, controls: true)
+      }
+      if posture.current == .book && panel == nil && !sealingLetter && !celebrating {
+        AdventureMemoryView(game: game, painting: painting, posture: posture)
+      } else if posture.current == .tent && panel == nil && !sealingLetter && !celebrating {
+        AdventureShadowTheaterView(game: game, posture: posture, onCricket: game.canPlayCricket ? { panel = .cricket } : nil)
       }
     }
   }
 
-  private func painting(game: SeekerGame, size: CGSize) -> some View {
-    ScrollSearchCanvas(
-      archive: game.archive, activeTarget: pendingDiscovery ?? game.currentTarget,
-      foundTargets: game.allFoundTargets, museumMode: museumMode && purchases.isPro,
-      hintTarget: hintTarget, hintTrigger: hintTrigger, onTap: tapped,
-      onViewportChange: { viewport = $0 }, feedback: feedback,
-      chapterID: game.selectedChapterID ?? "river", startX: 1,
-      chapterComplete: game.chapterComplete,
-      chapterRange: (game.chapter?.xRange.first ?? 0.4)...(game.chapter?.xRange.last ?? 1),
-      isActive: inChapter && isOpen && story == nil && !showCompletion && !showSettings && !showMembership && scenePhase == .active
-    )
-    .overlay(alignment: .topLeading) {
-      if let target = pendingDiscovery ?? game.currentTarget {
-        Button { setOpen(false) } label: {
-          HStack(spacing: 10) {
-            ClueArtwork(target: target).frame(width: 48, height: 48).clipShape(Circle())
-              .overlay { Circle().strokeBorder(SeekerStyle.gold, lineWidth: 2) }
-            VStack(alignment: .leading, spacing: 3) {
-              Text(target.chineseName).font(SeekerStyle.brush(20))
-              Text("\(game.foundCount) / 5 found · View clue").font(.system(.caption2, design: .serif))
-            }
-          }
-          .padding(10).foregroundStyle(SeekerStyle.ink)
-          .background(SeekerStyle.paper.opacity(0.94), in: RoundedRectangle(cornerRadius: 8))
-          .overlay { RoundedRectangle(cornerRadius: 8).strokeBorder(SeekerStyle.gold.opacity(0.5), lineWidth: 1) }
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Current clue: \(target.englishName). \(game.foundCount) of 5 found. Fold to view.")
-        .padding(16)
-      }
-    }
-    .overlay(alignment: .bottom) {
-      VStack(spacing: 12) {
-        HStack(alignment: .bottom) {
-          Button {
-            if purchases.isPro { museumMode.toggle() } else { showMembership = true }
-          } label: {
-            Label(museumMode ? "Museum on" : "Museum", systemImage: "book.closed")
-              .font(.system(.caption, design: .serif)).padding(.horizontal, 14).padding(.vertical, 13)
-              .background(museumMode ? SeekerStyle.indigo : SeekerStyle.paper.opacity(0.95), in: Capsule())
-              .foregroundStyle(museumMode ? SeekerStyle.paper : SeekerStyle.indigo)
-          }
-          .accessibilityHint("Revisit stories by tapping found seals. Requires Pro.")
-          .disabled(pendingDiscovery != nil)
-          Spacer()
-          if game.currentTarget != nil {
-            Button(action: requestHint) {
-              Label(purchases.isPro ? "Hint" : "Hint · \(max(0, 1 - game.hintsUsed))", systemImage: "magnifyingglass")
-                .font(.system(.caption, design: .serif)).padding(.horizontal, 16).padding(.vertical, 13)
-                .foregroundStyle(SeekerStyle.paper).background(SeekerStyle.indigo, in: Capsule())
-            }.disabled(pendingDiscovery != nil)
-          } else {
-            Button("Collected seals") { showCompletion = true }
-              .font(.system(.caption, design: .serif)).padding(13)
-              .background(SeekerStyle.paper, in: Capsule())
-          }
-        }
-        SeekerMinimap(viewport: viewport, found: game.allFoundTargets)
-      }.padding(.horizontal, 20).padding(.bottom, 16)
-    }
-    .modifier(ScrollUnrollPresentation(progress: unroll, viewportSize: size, reduceMotion: reduceMotion))
-    .opacity(unroll > 0 ? 1 : 0)
-    .allowsHitTesting(isOpen && !isTransitioning).accessibilityHidden(!isOpen)
+  private func world(game: AdventureGame, painting: ScrollArchive, controls: Bool) -> some View {
+    AdventureWorldView(game: game, painting: painting,
+      isActive: isOpen && panel == nil && !showSettings && !showMembership && scenePhase == .active
+        && (posture.current == .open || posture.current == .laptop || celebrating),
+      controlsEnabled: canWalk, onHome: { posture.set(.folded) }, posture: posture,
+      onSettings: { showSettings = true }, onPathEditor: { panel = .pathEditor },
+      showControls: controls, jumpTrigger: jumpCount, lanternLit: lanternLit, revealProgress: unroll)
   }
 
   private func load() {
-    do { game = SeekerGame(archive: try ScrollArchive.load()); loadError = nil }
-    catch { loadError = error.localizedDescription }
+    do {
+      let archive = try AdventureArchive.load()
+      game = AdventureGame(archive: archive)
+      painting = AdventurePainting.make(story: archive, original: try ScrollArchive.loadWorld())
+      loadError = nil
+    } catch { loadError = error.localizedDescription }
   }
 
-  private func begin(_ chapter: ScrollChapter) {
-    guard chapter.free || purchases.isPro else { showMembership = true; return }
-    game?.startChapter(chapter)
-    hintTarget = nil
-    feedback = nil
-    transitionTask?.cancel()
-    isTransitioning = false
-    inChapter = true
-    isOpen = false
-    unroll = 0
+  private func postureChanged(_ value: AdventurePosture) {
+    game?.stopWorld()
+    showSettings = false
+    showMembership = false
+    if value == .folded {
+      openRequestTask?.cancel()
+      openRequestTask = nil
+      if examIsPresented { setOpen(false) }
+      else if isOpen || panel != nil {
+        if celebrating {
+          celebrationTask?.cancel()
+          celebrating = false
+        }
+        game?.dismissMission()
+        panel = nil
+        sealingLetter = true
+      }
+    } else {
+      openWorld()
+      if value == .book, nearFork, !dismissedFork, panel == nil { panel = .fork }
+      if canWalk { game?.startWorld() }
+    }
   }
 
-  private func leaveChapter() {
-    discoveryTask?.cancel()
-    transitionTask?.cancel()
-    isTransitioning = false
-    game?.setSearching(false)
-    inChapter = false
-    isOpen = false
-    unroll = 0
-    pendingDiscovery = nil
-    story = nil
-    museumMode = false
+  private func letterFinished() {
+    guard sealingLetter else { return }
+    _ = game?.recordLetterHome()
+    sealingLetter = false
+    if posture.current == .folded {
+      foldHome()
+      if panel == nil, let ending = pendingEnding {
+        pendingEnding = nil
+        panel = .ending(ending)
+      }
+    }
+    else { openWorld() }
+  }
+
+  private func requestOpen() {
+    if posture.current == .open { openWorld() }
+    else { posture.set(.open) }
+  }
+
+  private func openWorld() {
+    guard let game else { return }
+    guard game.activeAct?.free == true || purchases.isPro else { showMembership = true; return }
+    guard WorldTileStore.shared.isReady else {
+      // Home remains mounted until all six tiles have been fully decoded.
+      // A cold unfold must never reveal an empty placeholder or partial map.
+      openRequestTask?.cancel()
+      openRequestTask = Task { @MainActor in
+        _ = await WorldTileStore.shared.awaitReady()
+        guard !Task.isCancelled, posture.current != .folded,
+          WorldTileStore.shared.isReady,
+          game.activeAct?.free == true || purchases.isPro else { return }
+        setOpen(true)
+      }
+      return
+    }
+    openRequestTask?.cancel()
+    openRequestTask = nil
+    setOpen(true)
+  }
+
+  private func foldHome() {
+    guard let game else { return }
+    game.stopWorld()
+    panel = nil
+    setOpen(false)
+    if let mission = game.foldHome() { panel = .mission(mission) }
   }
 
   private func setOpen(_ open: Bool) {
-    guard inChapter, open != isOpen || (open && unroll < 1) || isTransitioning else { return }
+    guard isOpen != open || transitioning else { return }
     transitionTask?.cancel()
-    isTransitioning = !reduceMotion
+    transitioning = !reduceMotion
     isOpen = open
     withAnimation(reduceMotion ? nil : .easeInOut(duration: 1.5)) { unroll = open ? 1 : 0 }
-    unfoldCount += 1
+    foldCount += 1
     if open { ScrollSound.shared.unroll() }
     transitionTask = Task { @MainActor in
       do { try await Task.sleep(for: .seconds(reduceMotion ? 0 : 1.5)) } catch { return }
       guard !Task.isCancelled else { return }
-      isTransitioning = false
+      transitioning = false
+      if open { considerFork() }
     }
   }
 
-  private func followHinge(_ fraction: Double, _ settled: Bool) {
-    guard inChapter else { return }
-    hasHingeData = true
-    if settled { setOpen(fraction > 0.5) }
-    else {
-      transitionTask?.cancel()
-      isTransitioning = true
-      isOpen = fraction > 0.02
-      unroll = reduceMotion ? (isOpen ? 1 : 0) : fraction
+  private func complete(_ mission: AdventureMission) {
+    guard let game, game.completeMission(mission.id) else { return }
+    celebrating = true
+    stampCount += 1
+    if game.actComplete { pendingEnding = game.activeAct; ScrollSound.shared.complete() }
+    else { ScrollSound.shared.found() }
+    panel = nil
+    celebrationTask?.cancel()
+    celebrationTask = Task { @MainActor in
+      do { try await Task.sleep(for: .seconds(reduceMotion || !isOpen ? 0.35 : (game.actComplete ? 5.3 : 2.8))) }
+      catch { return }
+      guard !Task.isCancelled else { return }
+      celebrating = false
+      panel = .reward(mission)
     }
   }
 
-  private func requestHint() {
-    guard let game, let target = game.requestHint(isPro: purchases.isPro) else { showMembership = true; return }
-    hintTarget = target
-    hintTrigger += 1
+  private func finishEnding(_ act: AdventureAct) {
+    panel = nil
+    if act.id == "act1" { posture.set(.open) }
   }
 
-  private func tapped(_ x: Double, _ y: Double) {
-    guard let game, pendingDiscovery == nil else { return }
-    if let target = SeekerGame.targetAt(x: x, y: y, candidates: game.currentTarget.map { [$0] } ?? []), game.find(target) {
-      pendingDiscovery = target
-      feedback = SearchTapFeedback(x: target.x, y: target.y, isFound: true)
-      stampCount += 1
-      hintTarget = nil
-      if game.chapterComplete { ScrollSound.shared.complete() } else { ScrollSound.shared.found() }
-      discoveryTask?.cancel()
-      discoveryTask = Task { @MainActor in
-        do { try await Task.sleep(for: .seconds(reduceMotion ? 0.2 : (game.chapterComplete ? 5.3 : 2.8))) }
-        catch { return }
-        guard inChapter, !Task.isCancelled else { return }
-        story = target
+  private func panelDismissed() {
+    if game?.pendingMission != nil { game?.dismissMission() }
+    guard panel == nil, !celebrating, !sealingLetter else { return }
+    if let ending = pendingEnding {
+      Task { @MainActor in
+        try? await Task.sleep(for: .milliseconds(200))
+        if panel == nil, !celebrating, !sealingLetter, pendingEnding?.id == ending.id {
+          pendingEnding = nil
+          panel = .ending(ending)
+        }
       }
-    } else if let found = SeekerGame.targetAt(x: x, y: y, candidates: game.allFoundTargets) {
-      if purchases.isPro { museumMode = true; story = found }
-      else { showMembership = true }
-    } else { feedback = SearchTapFeedback(x: x, y: y, isFound: false) }
+    }
   }
 
-  private func finishStory() {
-    let wasDiscovery = pendingDiscovery != nil
-    pendingDiscovery = nil
-    if wasDiscovery && game?.chapterComplete == true { showCompletion = true }
-    game?.setSearching(searching)
+  private func considerFork() {
+    guard canWalk, nearFork, !dismissedFork, panel == nil else { return }
+    panel = .fork
+  }
+
+  private func talk() {
+    guard let game else { return }
+    if nearFork { dismissedFork = false; panel = .fork }
+    else if let target = game.currentMissionTriggerX, abs(game.heroX - target) < 0.008 { game.walk(to: target) }
+    else { deckMessage = "走近緣字再交談 · Walk up to a marked person to talk." }
+  }
+
+  private func useItem(_ item: String?) {
+    guard let game else { return }
+    if item == "soy_sauce" { posture.set(.folded) }
+    else if item == "lantern" || game.ownedGear.contains("lantern") {
+      lanternLit.toggle()
+      deckMessage = lanternLit ? "燈火亮了 · The lantern is lit." : "燈火歇了 · The lantern rests."
+    } else {
+      deckMessage = "行囊備好了 · Your gear is equipped. The bottle is for Mother’s errand."
+    }
+  }
+}
+
+private enum AdventurePanel: Identifiable, Equatable {
+  case mission(AdventureMission)
+  case reward(AdventureMission)
+  case ending(AdventureAct)
+  case fork
+  case pathEditor
+  case cricket
+  var id: String {
+    switch self {
+    case .mission(let value): "mission-" + value.id
+    case .reward(let value): "reward-" + value.id
+    case .ending(let value): "ending-" + value.id
+    case .fork: "fork"
+    case .pathEditor: "path-editor"
+    case .cricket: "cricket"
+    }
   }
 }

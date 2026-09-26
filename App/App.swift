@@ -4,6 +4,10 @@ import SwiftUI
 struct AppDefinition: App {
   @State private var purchases = PurchaseStore()
 
+  init() {
+    WorldTileStore.shared.preload()
+  }
+
   var body: some Scene {
     WindowGroup {
       ContentView(purchases: purchases)

@@ -48,7 +48,11 @@
       },
       "sources": [
         {
-          "path": "App"
+          "path": "App",
+          "excludes": [
+            "Resources/Qingming/qingming_*.jpg",
+            "Resources/Qingming/walkpath.json"
+          ]
         }
       ],
       "type": "application"
