@@ -37,3 +37,14 @@ node_modules/
 # Build
 build/
 build-*/
+
+# Unity generated state and local builds
+Unity/[Ll]ibrary/
+Unity/[Tt]emp/
+Unity/[Oo]bj/
+Unity/[Ll]ogs/
+Unity/[Uu]serSettings/
+Unity/[Bb]uilds/
+Unity/TestResults/
+*.csproj
+*.sln
