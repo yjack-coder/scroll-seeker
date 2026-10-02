@@ -1,5 +1,17 @@
 # 尋畫 Scroll Seeker
 
+## Unity 3D riverside adventure
+
+The independent [`Unity/`](Unity/README.md) project adds a playable third-person village: accept Mother’s errand, cross Willow Bridge, buy and fill soy sauce at Master Chen’s counter, then walk home and Fold to deliver. It includes camera orbit, collisions, procedural character animation, NPC dialogue, collectible ink seals, unique rewards, local saves and five desktop posture modes. The Swift/iOS project remains in `App/` with its original story and assets.
+
+Use Unity **6000.3.25f1 (6.3 LTS), Apple Silicon**. Start with [controls, setup, architecture and tests](Unity/README.md); see [actual validation results](docs/UnityValidation.md), [environment and engine space requirements](docs/DevelopmentEnvironment.md), and [asset sources](Unity/ASSET_SOURCES.md). The Unity version implements desktop posture selection; physical fold hardware support is not implemented.
+
+![The playable riverside village and Willow Bridge](docs/UnityScreenshots/river.png)
+
+Actual macOS development-player capture. The [pouring challenge](docs/UnityScreenshots/pouring.png) and [earned shadow theater](docs/UnityScreenshots/theater.png) show the Laptop and Tent modes.
+
+## Original Swift/iOS adventure
+
 A story adventure across a supplied ink-painted world, inspired by the Qingming handscroll and built for iPhone and iPhone Duo: **打醬油 · A Life Along the River**.
 
 ## Play
